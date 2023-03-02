@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="例题和至少为 K 的最短子数组题面给你一个整数数组nums和一个整数k，找出nums中和至少为 k 的最短非空子数组。 并返回该子数组的长度。如果不存在这样的子数组，返回-1 。  子数组 是数组中 连续 的一部分。提示1 &lt;&#x3D; nums.length() &lt;&#x3D; 1e5 -1e5 &lt;&#x3D; nums[i] &lt;&#x3D; 1e5 1 &lt;&#x3D; k &lt;&#x3D; 1e9注意该数组元素可能为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单调队列">
+<meta property="og:url" content="http://yoursite.com/post/d9f45d1f.html">
+<meta property="og:site_name" content="诗鸩的笔记簿">
+<meta property="og:description" content="例题和至少为 K 的最短子数组题面给你一个整数数组nums和一个整数k，找出nums中和至少为 k 的最短非空子数组。 并返回该子数组的长度。如果不存在这样的子数组，返回-1 。  子数组 是数组中 连续 的一部分。提示1 &lt;&#x3D; nums.length() &lt;&#x3D; 1e5 -1e5 &lt;&#x3D; nums[i] &lt;&#x3D; 1e5 1 &lt;&#x3D; k &lt;&#x3D; 1e9注意该数组元素可能为">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic.leetcode.cn/1666668814-ikkWBN-862-1-2.png">
+<meta property="og:image" content="https://pic.leetcode.cn/1666669250-KypIVI-862-2-3.png">
+<meta property="article:published_time" content="2022-10-26T04:26:07.565Z">
+<meta property="article:modified_time" content="2022-11-03T04:33:20.492Z">
+<meta property="article:author" content="诗鸩">
+<meta property="article:tag" content="单调队列">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic.leetcode.cn/1666668814-ikkWBN-862-1-2.png">
+
+
+<link rel="canonical" href="http://yoursite.com/post/d9f45d1f.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/post/d9f45d1f.html","path":"post/d9f45d1f.html","title":"单调队列"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>单调队列 | 诗鸩的笔记簿</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">诗鸩的笔记簿</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%92%8C%E8%87%B3%E5%B0%91%E4%B8%BA-K-%E7%9A%84%E6%9C%80%E7%9F%AD%E5%AD%90%E6%95%B0%E7%BB%84"><span class="nav-number">1.1.</span> <span class="nav-text">和至少为 K 的最短子数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E9%9D%A2"><span class="nav-number">1.1.1.</span> <span class="nav-text">题面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E7%A4%BA"><span class="nav-number">1.1.2.</span> <span class="nav-text">提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F"><span class="nav-number">1.1.3.</span> <span class="nav-text">注意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">1.1.4.</span> <span class="nav-text">思路</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="诗鸩"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">诗鸩</p>
+  <div class="site-description" itemprop="description">暴搜流派！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/jack_jxnu" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;jack_jxnu" rel="noopener" target="_blank">CSDN</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/d9f45d1f.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="单调队列 | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          单调队列
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-10-26 12:26:07" itemprop="dateCreated datePublished" datetime="2022-10-26T12:26:07+08:00">2022-10-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-11-03 12:33:20" itemprop="dateModified" datetime="2022-11-03T12:33:20+08:00">2022-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h1><h2 id="和至少为-K-的最短子数组"><a href="#和至少为-K-的最短子数组" class="headerlink" title="和至少为 K 的最短子数组"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/">和至少为 K 的最短子数组</a></h2><h3 id="题面"><a href="#题面" class="headerlink" title="题面"></a>题面</h3><pre><code>给你一个整数数组nums和一个整数k，找出nums中和至少为 k 的最短非空子数组。
+并返回该子数组的长度。如果不存在这样的子数组，返回-1 。
+
+子数组 是数组中 连续 的一部分。</code></pre><h3 id="提示"><a href="#提示" class="headerlink" title="提示"></a>提示</h3><pre><code>1 &lt;= nums.length() &lt;= 1e5
+-1e5 &lt;= nums[i] &lt;= 1e5
+1 &lt;= k &lt;= 1e9</code></pre><h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p><font color="red">该数组元素可能为负，故而其区间和不具有“单调性”，因此无法使用二分查找、滑动窗口来解决问题。</font><br>例如：</p>
+<pre><code>nums = [44,-25,75,-50,-38,-42,-32,-6,-40,-47]
+k = 19</code></pre><p>二分时，mid=5并不能使得s[i]-s[i-mid]&gt;=19，但mid=1却可以。</p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>思路及用图来自<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/solution/liang-zhang-tu-miao-dong-dan-diao-dui-li-9fvh/">两张图秒懂单调队列</a></p>
+<ol>
+<li>我们先求出nums的前缀和s，然后用暴力算法枚举j &lt; i，求满足s[i]-s[j] &gt;= k的最小(i-j)。暴力算法是O(N^2^)的，必须考虑优化。</li>
+<li>可以遍历s，同时用某个数据结构来维护遍历过的s[i]，并<font color="red">及时移除无用的s[i]</font>。</li>
+<li>优化一：<br><img src="https://pic.leetcode.cn/1666668814-ikkWBN-862-1-2.png" alt="alt 属性文本"></li>
+<li>优化二：<br><img src="https://pic.leetcode.cn/1666669250-KypIVI-862-2-3.png" alt="alt 属性文本"></li>
+<li>优化后将s[i]加入该数据结构中。</li>
+<li>由于优化二保证了该数据结构中的元素一定会单调递增，所以优化一移除的一定是数据结构中左侧的若干元素；优化二移除的是右侧若干元素；s[i]加入到右侧。故选用双端队列。<br><font color="green">由于该双端队列中的元素始终单调，故称之为单调(双端)队列。</font></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97/" rel="tag"># 单调队列</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/post/71d82e51.html" rel="prev" title="C++ primer-1. 开始">
+                  <i class="fa fa-chevron-left"></i> C++ primer-1. 开始
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/post/f2c4b155.html" rel="next" title="C++ primer-2. 基本类型">
+                  C++ primer-2. 基本类型 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">诗鸩</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

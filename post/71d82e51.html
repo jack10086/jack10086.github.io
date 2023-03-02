@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="编写一个简单的C++程序类型是程序设计的最基本概念之一。一种类型不仅定义了数据元素的内容，还定义了这类数据上可以进行的运算。程序锁处理的数据都保存在变量中，而每个变量都有自己的类型。如果一个名为val的变量的类型是T，通常我们说 “val是一个T类型变量” 或 “val具有类型T”。 编译、运行程序初识输入输出C++使用的iostream库中定义了两个基础类型istream和ostream，分别表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ primer-1. 开始">
+<meta property="og:url" content="http://yoursite.com/post/71d82e51.html">
+<meta property="og:site_name" content="诗鸩的笔记簿">
+<meta property="og:description" content="编写一个简单的C++程序类型是程序设计的最基本概念之一。一种类型不仅定义了数据元素的内容，还定义了这类数据上可以进行的运算。程序锁处理的数据都保存在变量中，而每个变量都有自己的类型。如果一个名为val的变量的类型是T，通常我们说 “val是一个T类型变量” 或 “val具有类型T”。 编译、运行程序初识输入输出C++使用的iostream库中定义了两个基础类型istream和ostream，分别表">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-19T14:20:46.286Z">
+<meta property="article:modified_time" content="2022-10-21T12:13:39.790Z">
+<meta property="article:author" content="诗鸩">
+<meta property="article:tag" content="基础">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/post/71d82e51.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/post/71d82e51.html","path":"post/71d82e51.html","title":"C++ primer-1. 开始"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C++ primer-1. 开始 | 诗鸩的笔记簿</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">诗鸩的笔记簿</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84C-%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.</span> <span class="nav-text">编写一个简单的C++程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E3%80%81%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.1.</span> <span class="nav-text">编译、运行程序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E8%AF%86%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA"><span class="nav-number">2.</span> <span class="nav-text">初识输入输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A%E7%AE%80%E4%BB%8B"><span class="nav-number">3.</span> <span class="nav-text">注释简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E6%B5%81"><span class="nav-number">4.</span> <span class="nav-text">控制流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#while%E8%AF%AD%E5%8F%A5"><span class="nav-number">4.1.</span> <span class="nav-text">while语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#for%E8%AF%AD%E5%8F%A5"><span class="nav-number">4.2.</span> <span class="nav-text">for语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96%E6%95%B0%E9%87%8F%E4%B8%8D%E5%AE%9A%E7%9A%84%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="nav-number">4.3.</span> <span class="nav-text">读取数量不定的输入数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E7%AE%80%E4%BB%8B"><span class="nav-number">5.</span> <span class="nav-text">类简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E8%AF%86%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">5.1.</span> <span class="nav-text">初识成员函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text">问题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="诗鸩"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">诗鸩</p>
+  <div class="site-description" itemprop="description">暴搜流派！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/jack_jxnu" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;jack_jxnu" rel="noopener" target="_blank">CSDN</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/71d82e51.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="C++ primer-1. 开始 | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++ primer-1. 开始
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-10-19 22:20:46" itemprop="dateCreated datePublished" datetime="2022-10-19T22:20:46+08:00">2022-10-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-21 20:13:39" itemprop="dateModified" datetime="2022-10-21T20:13:39+08:00">2022-10-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="编写一个简单的C-程序"><a href="#编写一个简单的C-程序" class="headerlink" title="编写一个简单的C++程序"></a>编写一个简单的C++程序</h2><p>类型是程序设计的最基本概念之一。一种类型不仅定义了数据元素的内容，还定义了这类数据上可以进行的运算。<br>程序锁处理的数据都保存在变量中，而每个变量都有自己的类型。如果一个名为val的变量的类型是T，通常我们说 “val是一个T类型变量” 或 “val具有类型T”。</p>
+<h3 id="编译、运行程序"><a href="#编译、运行程序" class="headerlink" title="编译、运行程序"></a>编译、运行程序</h3><h2 id="初识输入输出"><a href="#初识输入输出" class="headerlink" title="初识输入输出"></a>初识输入输出</h2><p>C++使用的iostream库中定义了两个基础类型<strong>istream</strong>和<strong>ostream</strong>，分别表示输入流和输出流。一个流就是一个字符序列，是从IO设备读出或写入IO设备的。术语“流” 的意思是：随着时间推移，字符是顺序产生或消耗的。</p>
+<p>标准库的四个标准输入输出流：cin、cout、cerr、clog。</p>
+<p>cout可以重定向（比如输出到文件），通过缓冲区。cerr不可以重定向，只能输出到显示器，不通过缓冲区。cerr的作用是在一些特殊的紧急情况下还可以输出（比如调用栈用完了，没有出口的递归等等）。</p>
+<p>缓冲区的目的是减少刷屏的次数，多个字符同时输出到显示器。</p>
+<p><font color="red">endl可以刷新缓冲。</font>在添加打印语句时，应保证一直刷新流，以防程序崩溃，输出还停留在缓冲区内。</p>
+<h2 id="注释简介"><a href="#注释简介" class="headerlink" title="注释简介"></a>注释简介</h2><p>当修改代码时，不要忘记修改注释。<br>C++有两种注释：</p>
+<ol>
+<li>单行注释：以双斜线 // 开始，换行符结束。</li>
+<li>界定符对注释：以 /* 开始，*/结束。</li>
+<li>当界定符对注释跨越多行时，最好能显示指出其内部的程序行都属于多行注释的一部分，因此建议注释内的每行都以一个星号开头。<br>在 VS 中使用快捷键注释多行时采用的是 //。理解：因为要注释的代码中可能包含 */ 字符，这种情况下使用界定符对注释会产生错误，所以采用单行注释方式</li>
+</ol>
+<h2 id="控制流"><a href="#控制流" class="headerlink" title="控制流"></a>控制流</h2><h3 id="while语句"><a href="#while语句" class="headerlink" title="while语句"></a>while语句</h3><p>while语句在执行过程中交替地检测条件和执行关联的语句，直到条件为假。</p>
+<h3 id="for语句"><a href="#for语句" class="headerlink" title="for语句"></a>for语句</h3><p>因为<font color="red">在循环条件中检测变量、在循环体中递增变量的模式使用非常频繁</font>，所以 C++ 专门定义了第二种循环语句：for 语句，来简化这种模式。</p>
+<h3 id="读取数量不定的输入数据"><a href="#读取数量不定的输入数据" class="headerlink" title="读取数量不定的输入数据"></a>读取数量不定的输入数据</h3><p>使用<font color="red">while(cin &gt;&gt; x)</font>来读取数量不定的输入，循环会一直执行到<font color="red">文件结束符</font>或输入错误为止。<br>windows的文件结束符是<b>Ctrl + Z，然后回车</b>。</p>
+<p><font color="green">在编译时，最好修改一个错误就编译一次，或者最多修改了一小部分后重新编译。</font></p>
+<h2 id="类简介"><a href="#类简介" class="headerlink" title="类简介"></a>类简介</h2><p>类是 C++ 最重要的特性之一。<br>类定义了行为。类的作者决定了类类型对象上可以使用的所有操作。</p>
+<h3 id="初识成员函数"><a href="#初识成员函数" class="headerlink" title="初识成员函数"></a>初识成员函数</h3><p>成员函数是定义为类的一部分的函数，也被称为方法。<br>通常以类对象的名义来调用成员函数：Vector.size()，即使用点运算符(.)。</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
+<li>四个标准输入输出流是什么？</li>
+<li>cout和cerr的两点区别。</li>
+<li>缓冲区有什么作用？可以通过什么刷新缓冲区？</li>
+<li>while(cin &gt;&gt; x) 在什么情况下停止？</li>
+<li>windows的文件结束符是什么？</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%9F%BA%E7%A1%80/" rel="tag"># 基础</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/post/3c50d03d.html" rel="prev" title="Markdown语法">
+                  <i class="fa fa-chevron-left"></i> Markdown语法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/post/d9f45d1f.html" rel="next" title="单调队列">
+                  单调队列 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">诗鸩</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

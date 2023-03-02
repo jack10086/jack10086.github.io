@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="转载自：爱编程的大丙，同时参考了C++的写法。建议搭配视频一起食用：C语言线程池、C改C++版。 线程池的原理我们使用线程时就去创建一个线程，这样实现起来确实简便，但实际工程中会有一个问题：如果并发的线程数量很多，并且每个线程都是执行了一个时间很短的任务就结束了，那么频繁创建线程就会大大降低系统的效率，因为线程的销毁和创建都需要时间。 那么有没有一种办法可以使得线程能够复用，即执行一个任务后不被销">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程池">
+<meta property="og:url" content="http://yoursite.com/post/de7c53fe.html">
+<meta property="og:site_name" content="诗鸩的笔记簿">
+<meta property="og:description" content="转载自：爱编程的大丙，同时参考了C++的写法。建议搭配视频一起食用：C语言线程池、C改C++版。 线程池的原理我们使用线程时就去创建一个线程，这样实现起来确实简便，但实际工程中会有一个问题：如果并发的线程数量很多，并且每个线程都是执行了一个时间很短的任务就结束了，那么频繁创建线程就会大大降低系统的效率，因为线程的销毁和创建都需要时间。 那么有没有一种办法可以使得线程能够复用，即执行一个任务后不被销">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://subingwen.cn/linux/threadpool/R9c00030b842edb1ae3d6a2b286e53916">
+<meta property="article:published_time" content="2023-02-20T13:47:34.397Z">
+<meta property="article:modified_time" content="2023-02-20T13:57:35.756Z">
+<meta property="article:author" content="诗鸩">
+<meta property="article:tag" content="线程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://subingwen.cn/linux/threadpool/R9c00030b842edb1ae3d6a2b286e53916">
+
+
+<link rel="canonical" href="http://yoursite.com/post/de7c53fe.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/post/de7c53fe.html","path":"post/de7c53fe.html","title":"线程池"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>线程池 | 诗鸩的笔记簿</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">诗鸩的笔记簿</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">线程池的原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97"><span class="nav-number">2.</span> <span class="nav-text">任务队列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%A3%B0%E6%98%8E"><span class="nav-number">2.1.</span> <span class="nav-text">类声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%AE%9A%E4%B9%89"><span class="nav-number">2.2.</span> <span class="nav-text">类定义</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="nav-number">3.</span> <span class="nav-text">线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%A3%B0%E6%98%8E-1"><span class="nav-number">3.1.</span> <span class="nav-text">类声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">3.2.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="诗鸩"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">诗鸩</p>
+  <div class="site-description" itemprop="description">暴搜流派！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/jack_jxnu" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;jack_jxnu" rel="noopener" target="_blank">CSDN</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/de7c53fe.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="线程池 | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          线程池
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-02-20 21:47:34 / 修改时间：21:57:35" itemprop="dateCreated datePublished" datetime="2023-02-20T21:47:34+08:00">2023-02-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>转载自：<a target="_blank" rel="noopener" href="https://subingwen.cn/linux/threadpool/">爱编程的大丙</a>，同时参考了<a target="_blank" rel="noopener" href="https://subingwen.cn/linux/threadpool-cpp/">C++的写法</a>。</strong><br><strong>建议搭配视频一起食用：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1jV411J795">C语言线程池</a>、<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1364y1i7uo">C改C++版</a>。</strong></p>
+<h1 id="线程池的原理"><a href="#线程池的原理" class="headerlink" title="线程池的原理"></a>线程池的原理</h1><p>我们使用线程时就去创建一个线程，这样实现起来确实简便，但实际工程中会有一个问题：如果并发的线程数量很多，并且每个线程都是执行了一个时间很短的任务就结束了，那么频繁创建线程就会大大降低系统的效率，因为线程的销毁和创建都需要时间。</p>
+<p>那么有没有一种办法可以使得线程能够复用，即执行一个任务后不被销毁，而是可以继续执行其它任务呢？</p>
+<p>线程池是一种多线程处理形式，处理过程中将任务添加到队列，在创建线程后自动启动这些任务。线程池线程都是后台线程，每个线程都使用默认的堆栈大小，以默认的优先级运行，并处于多线程单元中。如果某个线程在托管代码中空闲（如正在等待某个事件），则线程池将插入另一个辅助线程来帮助所有处理器保持繁忙。如果所有线程池的线程都始终保持繁忙，但队列中包含挂起的工作，则线程池将在一段时间后创建另一个辅助线程，但线程的数量永远不会超过最大值。超过最大值的线程可以排队，当它们要等到其它线程完成后才能启动。</p>
+<p>在各个编程语言中都有线程池的概念，并且很多语言中直接提供了线程池，下面给大家介绍一下线程池的实现原理：</p>
+<ul>
+<li>线程池的组成主要分为 3 个部分：<ol>
+<li>任务队列，存储需要处理的任务，由工作的线程来处理这些任务<ul>
+<li>通过线程池提供的API函数，将一个待处理的任务添加到任务队列，或者从任务队列中删除</li>
+<li>已处理的任务会从任务队列中删除</li>
+<li>线程池的使用者，也就是调用线程池函数往任务队列里添加任务的线程就是生产者线程</li>
+</ul>
+</li>
+<li>工作的线程（任务队列任务的消费者），N个<ul>
+<li>线程池中维护了一定数量的工作线程，它们的作用是不停地读任务队列，从中取出任务并处理</li>
+<li>工作的线程相当于是任务队列的消费者角色</li>
+<li>如果任务队列为空，工作的线程将会被阻塞（使用条件变量\信号量阻塞）</li>
+<li>如果阻塞之后有了新任务，生产者将解除阻塞，工作线程开始工作</li>
+</ul>
+</li>
+<li>管理者线程（不处理任务队列中的任务），1个 <ul>
+<li>它的任务是周期地对任务队列中的任务数量及处于忙状态的工作线程个数进行检测  </li>
+<li>当任务过多时，可以适当地创建一些新的工作线程</li>
+<li>当任务过少时，可以适当地销毁一些工作线程<br><img src="https://subingwen.cn/linux/threadpool/R9c00030b842edb1ae3d6a2b286e53916" alt="alt=&quot;线程池工作原理&quot;"></li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h1 id="任务队列"><a href="#任务队列" class="headerlink" title="任务队列"></a>任务队列</h1><h2 id="类声明"><a href="#类声明" class="headerlink" title="类声明"></a>类声明</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义任务结构体</span></span><br><span class="line"><span class="keyword">using</span> callback = <span class="built_in">void</span> (*)(<span class="type">void</span> *);</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Task</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">Task</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        function = <span class="literal">nullptr</span>;</span><br><span class="line">        arg = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">Task</span>(callback f, <span class="type">void</span> *arg)</span><br><span class="line">    &#123;</span><br><span class="line">        function = f;</span><br><span class="line">        <span class="keyword">this</span>-&gt;arg = arg;</span><br><span class="line">    &#125;</span><br><span class="line">    callback function;</span><br><span class="line">    <span class="type">void</span> *arg;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 任务队列</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TaskQueue</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">TaskQueue</span>();</span><br><span class="line">    ~<span class="built_in">TaskQueue</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加任务</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">addTask</span><span class="params">(Task &amp;task)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">addTask</span><span class="params">(callback func, <span class="type">void</span> *arg)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 取出一个任务</span></span><br><span class="line">    <span class="function">Task <span class="title">takeTask</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取当前队列中的任务个数</span></span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">taskNumber</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> m_queue.<span class="built_in">size</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">pthread_mutex_t</span> m_mutex; <span class="comment">// 互斥锁</span></span><br><span class="line">    queue&lt;Task&gt; m_queue;     <span class="comment">// 任务队列</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其中 Task 是任务类，里边有两个成员，分别是两个指针 void(<em>)(void</em>) 和 void*；<br>另外一个类 TaskQueue 是任务队列，提供了添加任务、取出任务、存储任务、获取任务个数、线程同步的功能。</p>
+<h2 id="类定义"><a href="#类定义" class="headerlink" title="类定义"></a>类定义</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;TaskQueue.h&quot;</span></span></span><br><span class="line"></span><br><span class="line">TaskQueue::<span class="built_in">TaskQueue</span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">pthread_mutex_init</span>(&amp;m_mutex, <span class="literal">nullptr</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">TaskQueue::~<span class="built_in">TaskQueue</span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">pthread_mutex_destroy</span>(&amp;m_mutex);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">TaskQueue::addTask</span><span class="params">(Task &amp;task)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">pthread_mutex_lock</span>(&amp;m_mutex);</span><br><span class="line">    m_queue.<span class="built_in">push</span>(task);</span><br><span class="line">    <span class="built_in">pthread_mutex_unlock</span>(&amp;m_mutex);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">TaskQueue::addTask</span><span class="params">(callback func, <span class="type">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">pthread_mutex_lock</span>(&amp;m_mutex);</span><br><span class="line">    <span class="function">Task <span class="title">task</span><span class="params">(func, arg)</span></span>;</span><br><span class="line">    m_queue.<span class="built_in">push</span>(task);</span><br><span class="line">    <span class="built_in">pthread_mutex_unlock</span>(&amp;m_mutex);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">Task <span class="title">TaskQueue::takeTask</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Task t;</span><br><span class="line">    <span class="built_in">pthread_mutex_lock</span>(&amp;m_mutex);</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">taskNumber</span>() &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        t = m_queue.<span class="built_in">front</span>();</span><br><span class="line">        m_queue.<span class="built_in">pop</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">pthread_mutex_unlock</span>(&amp;m_mutex);</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h1><h2 id="类声明-1"><a href="#类声明-1" class="headerlink" title="类声明"></a>类声明</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;TaskQueue.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ThreadPool</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">ThreadPool</span>(<span class="type">int</span> minNum, <span class="type">int</span> maxNum);</span><br><span class="line">    ~<span class="built_in">ThreadPool</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加任务</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">addTask</span><span class="params">(Task &amp;task)</span></span>;</span><br><span class="line">    <span class="comment">// 获取忙的线程个数</span></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getBusyNum</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="comment">// 获取活着的线程个数</span></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getAliveNum</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">// 消费者线程函数（工作线程）</span></span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">void</span> *<span class="title">worker</span><span class="params">(<span class="type">void</span> *arg)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 管理者线程</span></span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">void</span> *<span class="title">manager</span><span class="params">(<span class="type">void</span> *arg)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 单个线程退出</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">threadPoolExit</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">pthread_mutex_t</span> m_lock;  <span class="comment">//</span></span><br><span class="line">    <span class="type">pthread_cond_t</span> notEmpty; <span class="comment">// 任务队列是否为空</span></span><br><span class="line">    TaskQueue *taskQ;        <span class="comment">// 任务队列</span></span><br><span class="line">    <span class="type">pthread_t</span> managerID;     <span class="comment">// 管理者线程ID</span></span><br><span class="line">    <span class="type">pthread_t</span> *threadIDS;    <span class="comment">// 工作的线程ID</span></span><br><span class="line">    <span class="type">int</span> minNum;              <span class="comment">// 最小线程数量</span></span><br><span class="line">    <span class="type">int</span> maxNum;              <span class="comment">// 最大线程数量</span></span><br><span class="line">    <span class="type">int</span> busyNum;             <span class="comment">// 忙的线程数</span></span><br><span class="line">    <span class="type">int</span> aliveNum;            <span class="comment">// 存活的线程数</span></span><br><span class="line">    <span class="type">int</span> exitNum;             <span class="comment">// 要销毁的线程数</span></span><br><span class="line">    <span class="type">bool</span> shutdown = <span class="literal">false</span>;   <span class="comment">// 是否销毁线程池</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>代码见<a target="_blank" rel="noopener" href="https://github.com/jack10086/Simple_Thread_Pool">github</a>。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag"># 线程</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/post/614ed7e0.html" rel="prev" title="力扣周赛333">
+                  <i class="fa fa-chevron-left"></i> 力扣周赛333
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/post/aeafbee0.html" rel="next" title="IO模型">
+                  IO模型 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">诗鸩</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

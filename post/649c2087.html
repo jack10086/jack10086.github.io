@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="二分查找一种在有序数组中搜索特定值的O(log N)时间复杂度的算法。在此不多赘述。模板和一些个人想法模板一1234567&#x2F;&#x2F;返回递增数列a中 &gt;&#x3D; x 的数中最小的一个（即x或x的后继）while(l&lt;r) &amp;#123;    int mid &#x3D; (l+r) &gt;&gt; 1;    if(a[mid] &gt;&#x3D; x) r &#x3D; mid;    else l &#x3D; mid + 1;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二分法">
+<meta property="og:url" content="http://yoursite.com/post/649c2087.html">
+<meta property="og:site_name" content="诗鸩的笔记簿">
+<meta property="og:description" content="二分查找一种在有序数组中搜索特定值的O(log N)时间复杂度的算法。在此不多赘述。模板和一些个人想法模板一1234567&#x2F;&#x2F;返回递增数列a中 &gt;&#x3D; x 的数中最小的一个（即x或x的后继）while(l&lt;r) &amp;#123;    int mid &#x3D; (l+r) &gt;&gt; 1;    if(a[mid] &gt;&#x3D; x) r &#x3D; mid;    else l &#x3D; mid + 1;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-08T13:17:19.747Z">
+<meta property="article:modified_time" content="2022-10-08T13:26:33.332Z">
+<meta property="article:author" content="诗鸩">
+<meta property="article:tag" content="二分">
+<meta property="article:tag" content="思维">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/post/649c2087.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/post/649c2087.html","path":"post/649c2087.html","title":"二分法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>二分法 | 诗鸩的笔记簿</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">诗鸩的笔记簿</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="nav-number">1.</span> <span class="nav-text">二分查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E5%92%8C%E4%B8%80%E4%BA%9B%E4%B8%AA%E4%BA%BA%E6%83%B3%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">模板和一些个人想法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E4%B8%80"><span class="nav-number">2.1.</span> <span class="nav-text">模板一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E4%BA%8C"><span class="nav-number">2.2.</span> <span class="nav-text">模板二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E4%B8%89"><span class="nav-number">2.3.</span> <span class="nav-text">模板三</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E5%9B%9B"><span class="nav-number">2.4.</span> <span class="nav-text">模板四</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AA%E4%BA%BA%E6%83%B3%E6%B3%95"><span class="nav-number">2.5.</span> <span class="nav-text">个人想法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E6%88%98"><span class="nav-number">3.</span> <span class="nav-text">实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%B8%A4%E7%90%83%E4%B9%8B%E9%97%B4%E7%9A%84%E7%A3%81%E5%8A%9B"><span class="nav-number">3.1.</span> <span class="nav-text">1. 两球之间的磁力</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">3.1.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B7%E4%BE%8B"><span class="nav-number">3.1.2.</span> <span class="nav-text">样例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">3.1.3.</span> <span class="nav-text">思路</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%A2%8B%E5%AD%90%E9%87%8C%E6%9C%80%E5%B0%91%E6%95%B0%E7%9B%AE%E7%9A%84%E7%90%83"><span class="nav-number">3.2.</span> <span class="nav-text">2. 袋子里最少数目的球</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B7%E4%BE%8B-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">样例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF-1"><span class="nav-number">3.2.3.</span> <span class="nav-text">思路</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="诗鸩"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">诗鸩</p>
+  <div class="site-description" itemprop="description">暴搜流派！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/jack_jxnu" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;jack_jxnu" rel="noopener" target="_blank">CSDN</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/649c2087.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="二分法 | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          二分法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-10-08 21:17:19 / 修改时间：21:26:33" itemprop="dateCreated datePublished" datetime="2022-10-08T21:17:19+08:00">2022-10-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><pre><code>一种在有序数组中搜索特定值的O(log N)时间复杂度的算法。在此不多赘述。</code></pre><h2 id="模板和一些个人想法"><a href="#模板和一些个人想法" class="headerlink" title="模板和一些个人想法"></a>模板和一些个人想法</h2><h3 id="模板一"><a href="#模板一" class="headerlink" title="模板一"></a>模板一</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//返回递增数列a中 &gt;= x 的数中最小的一个（即x或x的后继）</span></span><br><span class="line"><span class="keyword">while</span>(l&lt;r) &#123;</span><br><span class="line">    <span class="type">int</span> mid = (l+r) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>(a[mid] &gt;= x) r = mid;</span><br><span class="line">    <span class="keyword">else</span> l = mid + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> a[l];</span><br></pre></td></tr></table></figure>
+<h3 id="模板二"><a href="#模板二" class="headerlink" title="模板二"></a>模板二</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//返回递增数列a中 &lt;= x 的数中最大的一个（即x或x的前驱）</span></span><br><span class="line"><span class="keyword">while</span>(l&lt;r) &#123;</span><br><span class="line">    <span class="type">int</span> mid = (l+r+<span class="number">1</span>) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>(a[mid] &lt;= x) l = mid;</span><br><span class="line">    <span class="keyword">else</span> r = mid - <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> a[l];</span><br></pre></td></tr></table></figure>
+<h3 id="模板三"><a href="#模板三" class="headerlink" title="模板三"></a>模板三</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//返回递增数列a中 x 或 x的后继）</span></span><br><span class="line"><span class="keyword">while</span>(l &lt;= r) &#123;</span><br><span class="line">    <span class="type">int</span> mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span>(a[mid] == x) <span class="keyword">return</span> mid;</span><br><span class="line">    <span class="keyword">if</span>(a[mid] &gt; x) r = m<span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">else</span> l = m+<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="模板四"><a href="#模板四" class="headerlink" title="模板四"></a>模板四</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(l+<span class="number">4</span> &lt; r)&#123;</span><br><span class="line">    <span class="type">int</span> mid = (l+r)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>(a[mid] &gt; x) r = mid;</span><br><span class="line">    <span class="keyword">else</span> l = mid;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = l; i &lt; r; i++)</span><br><span class="line">    <span class="keyword">if</span>(a[i] &gt;= x) <span class="keyword">return</span> i;</span><br></pre></td></tr></table></figure>
+
+<h3 id="个人想法"><a href="#个人想法" class="headerlink" title="个人想法"></a>个人想法</h3><p>个人感觉模板四是最好入门的，毕竟大部分程序员把二分写进死循环的原因都是对边界的判断不对。那么所幸我们把边界放大，让最终结果一定在[l, r]中，最后根据题目需求从左到右或者从右到左遍历。同时我们限定的范围也不大，对时间复杂度的影响也是微乎其微的。</p>
+<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><h3 id="1-两球之间的磁力"><a href="#1-两球之间的磁力" class="headerlink" title="1. 两球之间的磁力"></a>1. <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/magnetic-force-between-two-balls/?envType=study-plan&id=binary-search-basic">两球之间的磁力</a></h3><h4 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h4><pre><code>给出x轴上n个篮子的位置，你手上有m个小球，要求小球必须放在篮子里。a、b两处的小球之间的磁力为|a-b|。要求最大化的最小磁力。
+2 &lt;= m &lt;= n &lt;= 1e5;
+1 &lt;= pos[i] &lt;= 1e9;
+保证任意pos中的数互不相同;</code></pre><h4 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h4><pre><code>pos = &#123;1,2,3,4,7&#125;, m = 3;
+ans = 3;
+
+pos = &#123;5,4,3,2,1,1000000000], m = 2;
+ans = 999999999;
+
+具体解释可以点击题目查看原题。</code></pre><h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><pre><code>1. 先排序pos。
+2. 按照常规思路用二分去搜索一个磁力值mid，在check()函数中，我们利用贪心的思路：判断当前篮子距离上个小球的距离是否&gt;mid，依此是否放入小球。
+3. check(): 放入的小球总数 &gt; mid，说明这个磁力值 mid 不能实现，return 0。否则return 1。</code></pre><h3 id="2-袋子里最少数目的球"><a href="#2-袋子里最少数目的球" class="headerlink" title="2. 袋子里最少数目的球"></a>2. <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-limit-of-balls-in-a-bag/">袋子里最少数目的球</a></h3><h4 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h4><pre><code>给定 n 堆，每堆有 a[i] 个球，你可以操作 m 次，每次可以把一堆球分为两堆。要求最小化最大堆的球数量并输出。</code></pre><h4 id="样例-1"><a href="#样例-1" class="headerlink" title="样例"></a>样例</h4><pre><code>a = [9], m = 2;
+ans = 3。
+
+a = [2,4,8,2], m = 4;
+ans = 2;</code></pre><h4 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h4><pre><code>1. 二分最大堆球数 mid，如果check(mid)为真，r = m-1。 否则 l = m+1。
+2. check(x, m): 验证能否在 m 次操作内把原来 &gt;x 的球堆分开。
+3. op += (a[i]-1) / x;</code></pre>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BA%8C%E5%88%86/" rel="tag"># 二分</a>
+              <a href="/tags/%E6%80%9D%E7%BB%B4/" rel="tag"># 思维</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/post/218758f6.html" rel="prev" title="C++核心编程">
+                  <i class="fa fa-chevron-left"></i> C++核心编程
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/post/3c50d03d.html" rel="next" title="Markdown语法">
+                  Markdown语法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">诗鸩</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

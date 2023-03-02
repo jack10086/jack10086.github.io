@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="找出中枢整数&amp;emsp;&amp;emsp;给定一个数n，中枢整数 x 的定义为 1~x的和 等于 x~n的和。&amp;emsp;&amp;emsp;返回中枢整数，不存在则返回-1。 思路&amp;emsp;&amp;emsp;常规思路：一层循环枚举x，当 x(x+1)&#x2F;2 &#x3D;&#x3D; (n+x)*(n-x+1)&#x2F;2 时，返回中枢整数x；循环结束返回-1。&amp;emsp;&amp;emsp;进阶思路：化简等式得：2*x^2^ &#x3D;&#x3D; n^2^ + n，当">
+<meta property="og:type" content="article">
+<meta property="og:title" content="力扣周赛321">
+<meta property="og:url" content="http://yoursite.com/post/965b878d.html">
+<meta property="og:site_name" content="诗鸩的笔记簿">
+<meta property="og:description" content="找出中枢整数&amp;emsp;&amp;emsp;给定一个数n，中枢整数 x 的定义为 1~x的和 等于 x~n的和。&amp;emsp;&amp;emsp;返回中枢整数，不存在则返回-1。 思路&amp;emsp;&amp;emsp;常规思路：一层循环枚举x，当 x(x+1)&#x2F;2 &#x3D;&#x3D; (n+x)*(n-x+1)&#x2F;2 时，返回中枢整数x；循环结束返回-1。&amp;emsp;&amp;emsp;进阶思路：化简等式得：2*x^2^ &#x3D;&#x3D; n^2^ + n，当">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-01T13:55:27.022Z">
+<meta property="article:modified_time" content="2023-02-20T14:09:29.355Z">
+<meta property="article:author" content="诗鸩">
+<meta property="article:tag" content="周赛">
+<meta property="article:tag" content="哈希">
+<meta property="article:tag" content="前缀和">
+<meta property="article:tag" content="单调栈">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/post/965b878d.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/post/965b878d.html","path":"post/965b878d.html","title":"力扣周赛321"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>力扣周赛321 | 诗鸩的笔记簿</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">诗鸩的笔记簿</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%BE%E5%87%BA%E4%B8%AD%E6%9E%A2%E6%95%B4%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">找出中枢整数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">1.1.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%BD%E5%8A%A0%E5%AD%97%E7%AC%A6%E4%BB%A5%E8%8E%B7%E5%BE%97%E5%AD%90%E5%BA%8F%E5%88%97"><span class="nav-number">2.</span> <span class="nav-text">追加字符以获得子序列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF-1"><span class="nav-number">2.1.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="nav-number">2.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8E%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%A7%BB%E9%99%A4%E8%8A%82%E7%82%B9"><span class="nav-number">3.</span> <span class="nav-text">从链表中移除节点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF-2"><span class="nav-number">3.1.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-2"><span class="nav-number">3.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1%E4%B8%AD%E4%BD%8D%E6%95%B0%E4%B8%BA-K-%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84"><span class="nav-number">4.</span> <span class="nav-text">统计中位数为 K 的子数组</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF-3"><span class="nav-number">4.1.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-3"><span class="nav-number">4.2.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="诗鸩"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">诗鸩</p>
+  <div class="site-description" itemprop="description">暴搜流派！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/jack_jxnu" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;jack_jxnu" rel="noopener" target="_blank">CSDN</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/965b878d.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="力扣周赛321 | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          力扣周赛321
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-12-01 21:55:27" itemprop="dateCreated datePublished" datetime="2022-12-01T21:55:27+08:00">2022-12-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-02-20 22:09:29" itemprop="dateModified" datetime="2023-02-20T22:09:29+08:00">2023-02-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="找出中枢整数"><a href="#找出中枢整数" class="headerlink" title="找出中枢整数"></a>找出中枢整数</h1><p>&emsp;&emsp;给定一个数n，中枢整数 x 的定义为 1~x的和 等于 x~n的和。<br>&emsp;&emsp;返回中枢整数，不存在则返回-1。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>&emsp;&emsp;常规思路：一层循环枚举x，当 x(x+1)/2 == (n+x)*(n-x+1)/2 时，返回中枢整数x；循环结束返回-1。<br>&emsp;&emsp;进阶思路：化简等式得：2*x^2^ == n^2^ + n，当x为整数时，中枢整数存在。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">pivotInteger</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> t = (n * n + n) / <span class="number">2</span>;</span><br><span class="line">    <span class="type">int</span> x = <span class="built_in">sqrt</span>(t);</span><br><span class="line">    <span class="keyword">if</span> (x * x == t)</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="追加字符以获得子序列"><a href="#追加字符以获得子序列" class="headerlink" title="追加字符以获得子序列"></a>追加字符以获得子序列</h1><p>&emsp;&emsp;两个仅由小写英文字母组成的字符串 s 和 t 。<br>&emsp;&emsp;现在需要通过向 s 末尾追加字符的方式使 t 变成 s 的一个子序列 ，返回需要追加的最少字符数。<br>&emsp;&emsp;子序列是一个可以由其他字符串删除部分（或不删除）字符但不改变剩下字符顺序得到的字符串。</p>
+<h2 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h2><p>&emsp;&emsp;双指针，分别指向 s 和 t，尽可能匹配，最后返回t.length()-t指针。</p>
+<h2 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">appendCharacters</span><span class="params">(string s, string t)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> n = s.<span class="built_in">length</span>();</span><br><span class="line">    <span class="type">int</span> m = t.<span class="built_in">length</span>();</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (i &lt; n &amp;&amp; j &lt; m; i++)</span><br><span class="line">        <span class="keyword">if</span> (s[i] == t[j])</span><br><span class="line">            j++;</span><br><span class="line">    <span class="keyword">return</span> m - j;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="从链表中移除节点"><a href="#从链表中移除节点" class="headerlink" title="从链表中移除节点"></a>从链表中移除节点</h1><p>&emsp;&emsp;给你一个链表的头节点 head 。<br>&emsp;&emsp;对于列表中的每个节点 node ，如果其右侧存在一个具有<b>严格更大值</b>的节点，则移除 node 。<br>&emsp;&emsp;返回修改后链表的头节点 head 。</p>
+<h2 id="思路-2"><a href="#思路-2" class="headerlink" title="思路"></a>思路</h2><p>&emsp;&emsp;先把链表数组化，对数组用单调栈，将单调栈中的数据转化为链表。<br>&emsp;&emsp;另一种优美的办法是利用递归。因为数组化之后的操作实际上就是逆序操作链表。我们可以保证从后往前遍历过的链表 tmp 已经非递增，tmp的首个元素一定是最大的，然后依次将前面的元素加入或丢掉。</p>
+<h2 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ListNode *<span class="title">removeNodes</span><span class="params">(ListNode *p)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (p-&gt;next == <span class="literal">nullptr</span>) <span class="comment">//保证链表不为空</span></span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line"></span><br><span class="line">    ListNode *tmp = <span class="built_in">removeNodes</span>(p-&gt;next);</span><br><span class="line">    <span class="keyword">if</span> (tmp-&gt;val &gt; p-&gt;val) <span class="comment">//丢掉小于tmp-&gt;val的</span></span><br><span class="line">        <span class="keyword">return</span> tmp;</span><br><span class="line">    p-&gt;next = tmp;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="统计中位数为-K-的子数组"><a href="#统计中位数为-K-的子数组" class="headerlink" title="统计中位数为 K 的子数组"></a>统计中位数为 K 的子数组</h1><p>&emsp;&emsp;给你一个长度为 n 的数组 nums ，该数组由从 1 到 n 的 不同 整数组成。另给你一个正整数 k 。</p>
+<p>&emsp;&emsp;统计并返回 num 中的 中位数 等于 k 的非空子数组的数目。</p>
+<p><b>注意：</b><br>&emsp;&emsp;数组的中位数是按递增顺序排列后位于 中间 的那个元素，如果数组长度为偶数，则中位数是位于中间靠<b>左</b>的那个元素。<br>&emsp;&emsp;例如，[2,3,1,4] 的中位数是 2 ，[8,4,3,5,1] 的中位数是 4 。<br>&emsp;&emsp;子数组是数组中的一个连续部分。</p>
+<h2 id="思路-3"><a href="#思路-3" class="headerlink" title="思路"></a>思路</h2><ol>
+<li>对于固定中位数的情况，可以将数组简化为-1，0，1的形式，则原问题转化为找一个 包含0 且 和为0或1 的子数组。</li>
+<li>对于子数组和问题，可以使用前缀和数组优化。</li>
+<li>对于查找问题，可以使用哈希表优化。</li>
+</ol>
+<h2 id="代码-3"><a href="#代码-3" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="type">int</span> v[<span class="number">100010</span>] = &#123;<span class="number">0</span>&#125;; <span class="comment">//辅助数组</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">countSubarrays</span><span class="params">(vector&lt;<span class="type">int</span>&gt; &amp;nums, <span class="type">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> n = nums.<span class="built_in">size</span>(), p; <span class="comment">//全数组有且仅有一个0，即nums[p]</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (k == nums[i - <span class="number">1</span>]) &#123;</span><br><span class="line">                v[i] = <span class="number">0</span>;</span><br><span class="line">                p = i;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (k &lt; nums[i - <span class="number">1</span>])</span><br><span class="line">                v[i] = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                v[i] = <span class="number">-1</span>;</span><br><span class="line">            v[i] += v[i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        unordered_map&lt;<span class="type">int</span>, <span class="type">int</span>&gt; mp; <span class="comment">//哈希表</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; p; i++)</span><br><span class="line">            mp[v[i]]++; <span class="comment">//必须包含0，则子数组左端点一定小于p</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = p; i &lt;= n; i++) &#123;</span><br><span class="line">            ans += mp[v[i] - <span class="number">1</span>]; <span class="comment">//和为-1</span></span><br><span class="line">            ans += mp[v[i]];     <span class="comment">//和为0</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%91%A8%E8%B5%9B/" rel="tag"># 周赛</a>
+              <a href="/tags/%E5%93%88%E5%B8%8C/" rel="tag"># 哈希</a>
+              <a href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/" rel="tag"># 前缀和</a>
+              <a href="/tags/%E5%8D%95%E8%B0%83%E6%A0%88/" rel="tag"># 单调栈</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/post/7f8a743.html" rel="prev" title="单源最短路问题">
+                  <i class="fa fa-chevron-left"></i> 单源最短路问题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/post/15fc6e8c.html" rel="next" title="线程">
+                  线程 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">诗鸩</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

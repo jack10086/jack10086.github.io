@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="转载自100%弄明白5种IO模型 从TCP发送数据的流程说起要深入的理解各种IO模型，那么必须先了解下产生各种IO的原因是什么，要知道这其中的本质问题那么我们就必须要知道一条消息是如何从一个人发送到另外一个人的； 以两个应用程序通讯为例，我们来了解一下当“A”向”B” 发送一条消息，简单来说会经过如下流程： 第一步：应用A把消息发送到 TCP发送缓冲区。 第二步：TCP发送缓冲区 再把消息发送出去">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IO模型">
+<meta property="og:url" content="http://yoursite.com/post/aeafbee0.html">
+<meta property="og:site_name" content="诗鸩的笔记簿">
+<meta property="og:description" content="转载自100%弄明白5种IO模型 从TCP发送数据的流程说起要深入的理解各种IO模型，那么必须先了解下产生各种IO的原因是什么，要知道这其中的本质问题那么我们就必须要知道一条消息是如何从一个人发送到另外一个人的； 以两个应用程序通讯为例，我们来了解一下当“A”向”B” 发送一条消息，简单来说会经过如下流程： 第一步：应用A把消息发送到 TCP发送缓冲区。 第二步：TCP发送缓冲区 再把消息发送出去">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-5311954c22d15ca91e47ab52168b7ada_720w.webp">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-cdd47940a292d8c4686570c7e128c235_720w.webp">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-abef476a75afe52193be9577dcbcb88a_720w.webp">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-529734ac694c4da96ac78eeebd7deb6b_720w.webp">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-2c65fd3534e58d3a54cdeae778a31446_720w.webp">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-260e80cbec13cbcc677779690f6ab2fa_720w.webp">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-2461c8df6a154930afb4e7c345442835_720w.webp">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-bf11a9d3c0f52da85298baa13000e5c9_720w.webp">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-96009f54d89ade0d8c4001bc67395c57_720w.webp">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-5095ab1ffe868a2577bc15310d740293_720w.webp">
+<meta property="article:published_time" content="2023-02-21T13:41:04.076Z">
+<meta property="article:modified_time" content="2023-03-02T13:54:45.296Z">
+<meta property="article:author" content="诗鸩">
+<meta property="article:tag" content="IO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic3.zhimg.com/80/v2-5311954c22d15ca91e47ab52168b7ada_720w.webp">
+
+
+<link rel="canonical" href="http://yoursite.com/post/aeafbee0.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/post/aeafbee0.html","path":"post/aeafbee0.html","title":"IO模型"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>IO模型 | 诗鸩的笔记簿</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">诗鸩的笔记簿</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8ETCP%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B5%81%E7%A8%8B%E8%AF%B4%E8%B5%B7"><span class="nav-number">1.</span> <span class="nav-text">从TCP发送数据的流程说起</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%BB%E5%A1%9E-%E9%9D%9E%E9%98%BB%E5%A1%9EIO"><span class="nav-number">2.</span> <span class="nav-text">阻塞&#x2F;非阻塞IO</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E9%98%BB%E5%A1%9EIO"><span class="nav-number">2.1.</span> <span class="nav-text">什么是阻塞IO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E9%9D%9E%E9%98%BB%E5%A1%9EIO"><span class="nav-number">2.2.</span> <span class="nav-text">什么是非阻塞IO</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IO%E5%A4%8D%E7%94%A8%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">IO复用模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E9%A9%B1%E5%8A%A8IO%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">信号驱动IO模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5IO"><span class="nav-number">5.</span> <span class="nav-text">异步IO</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%8D%E8%B0%88IO%E6%A8%A1%E5%9E%8B%E9%87%8C%E9%9D%A2%E7%9A%84%E5%90%8C%E6%AD%A5%E5%BC%82%E6%AD%A5"><span class="nav-number">6.</span> <span class="nav-text">再谈IO模型里面的同步异步</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#select%E3%80%81poll%E3%80%81epoll%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">7.</span> <span class="nav-text">select、poll、epoll的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ET%E5%92%8CLT"><span class="nav-number">8.</span> <span class="nav-text">ET和LT</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="诗鸩"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">诗鸩</p>
+  <div class="site-description" itemprop="description">暴搜流派！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/jack_jxnu" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;jack_jxnu" rel="noopener" target="_blank">CSDN</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/aeafbee0.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="IO模型 | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          IO模型
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-02-21 21:41:04" itemprop="dateCreated datePublished" datetime="2023-02-21T21:41:04+08:00">2023-02-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-02 21:54:45" itemprop="dateModified" datetime="2023-03-02T21:54:45+08:00">2023-03-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>转载自<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115912936">100%弄明白5种IO模型</a></p>
+<h1 id="从TCP发送数据的流程说起"><a href="#从TCP发送数据的流程说起" class="headerlink" title="从TCP发送数据的流程说起"></a>从TCP发送数据的流程说起</h1><p>要深入的理解各种IO模型，那么必须先了解下产生各种IO的原因是什么，要知道这其中的本质问题那么我们就必须要知道一条消息是如何从一个人发送到另外一个人的；</p>
+<p>以两个应用程序通讯为例，我们来了解一下当“A”向”B” 发送一条消息，简单来说会经过如下流程：</p>
+<p><strong>第一步</strong>：应用A把消息发送到 TCP发送缓冲区。</p>
+<p><strong>第二步</strong>：TCP发送缓冲区 再把消息发送出去，经过网络传递后，消息会发送到B服务器的 TCP接收缓冲区。</p>
+<p><strong>第三步</strong>：B再从 TCP接收缓冲区 去读取属于自己的数据。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-5311954c22d15ca91e47ab52168b7ada_720w.webp" alt="alt=&quot;&quot;"></p>
+<p>根据上图我们基本上了解消息发送要经过：应用A、应用A对应服务器的TCP发送缓冲区、经过网络传输后消息发送到了应用B对应服务器TCP接收缓冲区、最终B应用读取到消息。</p>
+<p>如果理解了上面的消息发送流程，那么我们下面开始进入文章的主题：</p>
+<h1 id="阻塞-非阻塞IO"><a href="#阻塞-非阻塞IO" class="headerlink" title="阻塞/非阻塞IO"></a>阻塞/非阻塞IO</h1><p>我们把视角切换到上面图中的第三步， 也就是应用B从TCP缓冲区中读取数据。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-cdd47940a292d8c4686570c7e128c235_720w.webp" alt="alt=&quot;&quot;"></p>
+<p><strong>思考一个问题</strong>：</p>
+<p>因为应用之间发送消息是间断性的，也就是说在上图中TCP缓冲区还没有接收到属于应用B该读取的消息时，<strong>如果</strong>此时应用B向TCP缓冲区发起读取申请，TCP接收缓冲区是应该马上告诉应用B现在没有你的数据，还是说让应用B在这里等着，直到有数据再把数据交给应用B？</p>
+<p>把这个问题应用到第一个步骤也是一样，应用A在向TCP发送缓冲区发送数据时，如果TCP发送缓冲区已经满了，那么是告诉应用A现在没空间了，还是让应用A等待着，等TCP发送缓冲区有空间了再把应用A的数据访拷贝到发送缓冲区。</p>
+<h2 id="什么是阻塞IO"><a href="#什么是阻塞IO" class="headerlink" title="什么是阻塞IO"></a>什么是阻塞IO</h2><p>如果上面的问题你已经思考过了，那么其实你已经明白了什么是阻塞IO，所谓阻塞IO就是当应用B发起读取数据申请时，在内核数据没有准备好之前，应用B会一直处于等待数据状态，直到内核把数据准备好了交给应用B才结束。</p>
+<p><strong>术语描述</strong>：在应用调用recvfrom读取数据时，其系统调用直到数据包到达且被复制到应用缓冲区中或者发送错误时才返回，在此期间一直会等待，进程从调用到返回这段时间内都是被阻塞的，称为阻塞IO。</p>
+<p><strong>流程</strong>：</p>
+<ol>
+<li>应用进程向内核发起recfrom读取数据。</li>
+<li>准备数据报（应用进程阻塞）。</li>
+<li>将数据从内核负责到应用空间。</li>
+<li>复制完成后，返回成功提示。</li>
+</ol>
+<p><img src="https://pic3.zhimg.com/80/v2-abef476a75afe52193be9577dcbcb88a_720w.webp" alt="alt=&quot;&quot;"></p>
+<h2 id="什么是非阻塞IO"><a href="#什么是非阻塞IO" class="headerlink" title="什么是非阻塞IO"></a>什么是非阻塞IO</h2><p>如果你已经理解了阻塞IO，那么必定已经知道了什么是非阻塞IO。按照上面的思路，所谓非阻塞IO就是当应用B发起读取数据申请时，如果内核数据没有准备好会即刻告诉应用B，不会让B在这里等待。</p>
+<p><strong>术语</strong>：非阻塞IO是在应用调用 recvfrom 读取数据时，如果该缓冲区没有数据的话，就会直接返回一个EWOULDBLOCK错误，不会让应用一直等待中。在没有数据的时候会即刻返回错误标识，那也意味着如果应用要读取数据就需要不断的调用 recvfrom 请求，直到读取到它数据要的数据为止。</p>
+<p><strong>流程</strong>：</p>
+<ol>
+<li>应用进程向内核发起 recvfrom 读取数据。</li>
+<li>没有数据报准备好，即刻返回 EWOULDBLOCK 错误码。</li>
+<li>应用进程重复向内核发起 recvfrom 读取数据。</li>
+<li>已有数据包准备好就进行一下步骤，否则还是返回错误码。</li>
+<li>将数据从内核拷贝到用户空间。</li>
+<li>完成后，返回成功提示。</li>
+</ol>
+<h1 id="IO复用模型"><a href="#IO复用模型" class="headerlink" title="IO复用模型"></a>IO复用模型</h1><p>如果你已经明白了非阻塞IO的工作模式，那么接下来我们继续了解IO复用模型的产生原因和思路：</p>
+<p><strong>思考一个问题</strong>：<br>我们还是把视角放到应用B从TCP缓冲区中读取数据这个环节来。在并发的环境下，可能会N个人向应用B发送消息，这种情况下我们的应用就必须创建多个线程去读取数据，每个线程都会自己调用 recvfrom 去读取数据。那么此时情况可能如下图：<br><img src="https://pic4.zhimg.com/80/v2-529734ac694c4da96ac78eeebd7deb6b_720w.webp" alt="alt=&quot;&quot;"></p>
+<p>并发情况下服务器很可能一瞬间会收到几十上百万的请求，这种情况下应用B就需要创建几十上百万的线程去读取数据，同时又因为应用线程是不知道什么时候会有数据读取，为了保证消息能及时读取到，那么这些线程自己必须不断的向内核发送 recvfrom 请求来读取数据。</p>
+<p>那么问题来了，这么多的线程不断调用 recvfrom 请求数据，服务器能否扛得住这么多线程是一个问题，资源的浪费也是一个问题，线程是我们操作系统的宝贵资源，大量的线程用来去读取数据了，那么就意味着能做其它事情的线程就会少。</p>
+<p>所以，有人就提出了一个思路，能不能提供一种方式，可以由一个线程监控多个网络请求（<strong>我们后面将称为fd文件描述符，linux系统把所有网络请求以一个fd来标识</strong>），这样就可以只需要一个或几个线程就可以完成数据状态询问的操作，当有数据准备就绪之后再分配对应的线程去读取数据，这么做就可以节省出大量的线程资源出来，这个就是IO复用模型的思路。<br><img src="https://pic3.zhimg.com/80/v2-2c65fd3534e58d3a54cdeae778a31446_720w.webp" alt="alt=&quot;&quot;"></p>
+<p>正如上图，IO复用模型的思路就是系统提供了一种函数可以同时监控多个fd的操作，这个函数就是我们常说到的select、poll、epoll函数，有了这个函数后，应用线程通过调用select函数就可以同时监控多个fd，select函数监控的fd中只要有任何一个数据状态准备就绪了，select函数就会返回可读状态，这时询问线程再去通知处理数据的线程，对应线程此时再发起 recvfrom 请求去读取数据。</p>
+<p><strong>术语描述</strong>：进程通过将一个或多个fd传递给select，阻塞在select操作上，select帮我们侦测多个fd是否准备就绪，当有fd准备就绪时，select返回数据可读状态，应用程序再调用recvfrom读取数据。<br><img src="https://pic3.zhimg.com/80/v2-260e80cbec13cbcc677779690f6ab2fa_720w.webp" alt="alt=&quot;&quot;"></p>
+<p><strong>总结</strong>：复用IO的基本思路就是通过slect或poll、epoll来监控多fd ，来达到不必为每个fd创建一个对应的监控线程，从而减少线程资源创建的目的。</p>
+<h1 id="信号驱动IO模型"><a href="#信号驱动IO模型" class="headerlink" title="信号驱动IO模型"></a>信号驱动IO模型</h1><p>IO复用模型解决了一个线程可以监控多个fd的问题，但是select是采用轮询的方式来监控多个fd的，通过不断的轮询fd的可读状态来知道是否有可读的数据，而无脑的轮询就显得有点暴力，因为大部分情况下的轮询都是无效的，所以有人就想，能不能不要我总是去问你是否数据准备就绪，能不能我发出请求后等你数据准备好了就通知我，所以就衍生了信号驱动IO模型。</p>
+<p>信号驱动IO不是用循环请求询问的方式去监控数据就绪状态，而是在调用sigaction时候建立一个SIGIO的信号联系，当内核数据准备好之后再通过SIGIO信号通知线程；线程收到可读状态的信号后，再向内核发起recvfrom读取数据的请求。因为信号驱动IO的模型下应用线程在发出信号监控后即可返回，不会阻塞，所以这样的方式下，一个应用线程也可以同时监控多个fd。</p>
+<p>类似于下图描述：<br><img src="https://pic2.zhimg.com/80/v2-2461c8df6a154930afb4e7c345442835_720w.webp" alt="alt=&quot;&quot;"></p>
+<p><strong>术语描述</strong>：首先开启套接口信号驱动IO功能，并通过系统调用sigaction执行一个信号处理函数，此时请求即刻返回，当数据准备就绪时，就生成对应进程的SIGIO信号，通过信号回调通知应用线程调用recvfrom来读取数据。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-bf11a9d3c0f52da85298baa13000e5c9_720w.webp" alt="alt=&quot;&quot;"></p>
+<p><strong>总结</strong>： IO复用模型里面的select虽然可以监控多个fd了，但select其实现的本质上还是通过不断的轮询fd来监控数据状态， 因为大部分轮询请求其实都是无效的，所以信号驱动IO意在通过这种建立信号关联的方式，实现了发出请求后只需要等待数据就绪的通知即可，可以避免大量无效的数据状态轮询操作。</p>
+<h1 id="异步IO"><a href="#异步IO" class="headerlink" title="异步IO"></a>异步IO</h1><p>其实经过了上面两个模型的优化，我们的效率已经有了很大的提升，但是人心不足，通过观察我们发现，不管是IO复用还是信号驱动，读取一个数据总是要发起两阶段的请求，第一次发送select请求，询问数据状态是否准备好，第二次发送recevform请求读取数据。</p>
+<p>也许你一开始就有一个疑问，为什么我们明明是想读取数据，而却非得要先发起一个select询问数据状态的请求，然后再发起真正的读取数据请求,能不能有一种一劳永逸的方式，我只要发送一个请求我告诉内核我要读取数据，然后我就什么都不管了，然后内核去帮我去完成剩下的所有事情？</p>
+<p>当然既然你想得出来，那么就会有人做得到，有人设计了一种方案，应用只需要向内核发送一个read请求,告诉内核它要读取数据后即刻返回；内核收到请求后会建立一个信号联系，当数据准备就绪，内核会主动把数据从内核复制到用户空间，等所有操作都完成之后，内核会发起一个通知告诉应用，我们称这种一劳永逸的模式为异步IO模型。<br><img src="https://pic4.zhimg.com/80/v2-96009f54d89ade0d8c4001bc67395c57_720w.webp" alt="alt=&quot;&quot;"></p>
+<p><strong>术语描述</strong>： 应用告知内核启动某个操作，并让内核在整个操作完成之后，通知应用。这种模型与信号驱动IO模型的主要区别在于，信号驱动IO只是由内核通知我们合适可以开始下一个IO操作，而异步IO模型是由内核通知我们操作什么时候完成。<br><img src="https://pic4.zhimg.com/80/v2-5095ab1ffe868a2577bc15310d740293_720w.webp" alt="alt=&quot;&quot;"></p>
+<p><strong>总结</strong>：异步IO的优化思路是解决了应用程序需要先后发送询问请求、发送接收数据请求两个阶段的模式，在异步IO的模式下，只需要向内核发送一次请求就可以完成状态询问和数拷贝的所有操作。</p>
+<h1 id="再谈IO模型里面的同步异步"><a href="#再谈IO模型里面的同步异步" class="headerlink" title="再谈IO模型里面的同步异步"></a>再谈IO模型里面的同步异步</h1><p>我们通常会说到同步阻塞IO、同步非阻塞IO，异步IO几种术语，通过上面的内容，那么我想你现在肯定已经理解了什么是阻塞什么是非阻塞了，所谓阻塞就是发起读取数据请求的时，当数据还没准备就绪的时候，这时请求是即刻返回，还是在这里等待数据的就绪，如果需要等待的话就是阻塞，反之如果即刻返回就是非阻塞。</p>
+<p>我们区分了阻塞和非阻塞后再来分别下同步和异步，在IO模型里面如果请求方从发起请求到数据最后完成的这一段过程中都需要自己参与，那么这种我们就称为同步请求；反之，如果应用发送完指令后就不再参与过程了，只需要等待最终完成结果的通知，那么这就属于异步。</p>
+<p>我们再看同步阻塞、同步非阻塞，它们不同的只是发起读取请求的时候一个请求阻塞，一个请求不阻塞，但是相同的是，它们都需要应用自己监控整个数据完成的过程。而为什么只有异步非阻塞 而没有异步阻塞呢，因为异步模型下请求指定发送完后就即刻返回了，没有任何后续流程了，所以它注定不会阻塞，所以也就只会有异步非阻塞模型了。</p>
+<h1 id="select、poll、epoll的区别"><a href="#select、poll、epoll的区别" class="headerlink" title="select、poll、epoll的区别"></a>select、poll、epoll的区别</h1><p>select实际上还是轮询，挨个问自己麾下的fd的可读状态；<br>它的缺点如下：</p>
+<ol>
+<li>每次调用select，都需要把fd集合从用户态拷贝到内核态，这个开销在fd很多时会很大</li>
+<li>同时每次调用select都需要在内核遍历传递进来的所有fd，这个开销在fd很多时也很大</li>
+<li>select支持的文件描述符数量太小了，默认是1024</li>
+</ol>
+<p>poll的工作原理与select十分相似，区别在于两者结构不同，poll是链式的，没有最大连接数的限制；</p>
+<p>epoll模型修改主动轮询为被动通知，当有事件发生时，被动接收通知。<br>epoll提供了3个函数：</p>
+<ul>
+<li><p>int epoll_create(int size);<br>建立一個 epoll 对象，并传回它的id</p>
+</li>
+<li><p>int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);<br>事件注册函数，将需要监听的事件和需要监听的fd交给epoll对象</p>
+</li>
+<li><p>int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout);<br>等待注册的事件被触发或者timeout发生</p>
+</li>
+</ul>
+<p>它解决了以下问题：</p>
+<ol>
+<li>取消fd数量限制</li>
+<li>epoll不需要每次都从用户空间将fd_set复制到内核kernel，它在用epoll_ctl函数进行事件注册的时候，已经将fd复制到内核中，所以不需要每次都重新复制一次。</li>
+<li>select 和 poll 都是主动轮询机制，需要遍历每一个人fd；epoll是被动触发方式，给fd注册了相应事件的时候，我们为每一个fd指定了一个回调函数，当数据准备好之后，就会把就绪的fd加入一个就绪的队列中，epoll_wait的工作方式实际上就是在这个就绪队列中查看有没有就绪的fd，如果有，就唤醒就绪队列上的等待者，然后调用回调函数。</li>
+<li>虽然epoll、poll、epoll都需要查看是否有fd就绪，但是epoll之所以是被动触发，就在于它只要去查找就绪队列中有没有fd，就绪的fd是主动加到队列中，epoll不需要一个个轮询确认。换一句话讲，就是select和poll只能通知有fd已经就绪了，但不能知道究竟是哪个fd就绪，所以select和poll就要去主动轮询一遍找到就绪的fd。而epoll则是不但可以知道有fd可以就绪，而且还具体可以知道就绪fd的编号，所以直接就可以找到（<strong>红黑树</strong>），不用轮询。</li>
+</ol>
+<h1 id="ET和LT"><a href="#ET和LT" class="headerlink" title="ET和LT"></a>ET和LT</h1><p>epoll 支持两种事件触发模式，分别是边缘触发（edge-triggered，ET）和水平触发（level-triggered，LT）。</p>
+<ul>
+<li>使用边缘触发模式时，当被监控的 Socket 描述符上有可读事件发生时，<strong>服务器端只会从 epoll_wait 中苏醒一次</strong>，即使进程没有调用 read 函数从内核读取数据，也依然只苏醒一次，因此我们程序要保证一次性将内核缓冲区的数据读取完。</li>
+<li>使用水平触发模式时，当被监控的 Socket 上有可读事件发生时，<strong>服务器端不断地从 epoll_wait 中苏醒，直到内核缓冲区数据被 read 函数读完才结束</strong>，目的是告诉我们有数据需要读取。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/IO/" rel="tag"># IO</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/post/de7c53fe.html" rel="prev" title="线程池">
+                  <i class="fa fa-chevron-left"></i> 线程池
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/post/ff2a4243.html" rel="next" title="力扣周赛334">
+                  力扣周赛334 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">诗鸩</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

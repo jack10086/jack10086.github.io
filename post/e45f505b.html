@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="背包问题作为 DP 中的经典问题，网络上已经可以找到许多成体系的博客了，这篇文章仅作为本人的一份复习随笔。文中难免诸多错漏，还请见谅，更欢迎提出。 01 背包问题题面有 N 块金子和一个容量为 M 的背包。第 i 块金子的体积是 w[i]，得到的价值是 v[i]，求将哪些金子装入背包可使价值总和最大。 思路定义状态：  f[i][j] 表示：前 i 块金子放入一个容量为 j 的背包可以获得的最大价">
+<meta property="og:type" content="article">
+<meta property="og:title" content="背包九讲">
+<meta property="og:url" content="http://yoursite.com/post/e45f505b.html">
+<meta property="og:site_name" content="诗鸩的笔记簿">
+<meta property="og:description" content="背包问题作为 DP 中的经典问题，网络上已经可以找到许多成体系的博客了，这篇文章仅作为本人的一份复习随笔。文中难免诸多错漏，还请见谅，更欢迎提出。 01 背包问题题面有 N 块金子和一个容量为 M 的背包。第 i 块金子的体积是 w[i]，得到的价值是 v[i]，求将哪些金子装入背包可使价值总和最大。 思路定义状态：  f[i][j] 表示：前 i 块金子放入一个容量为 j 的背包可以获得的最大价">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-02T13:48:21.768Z">
+<meta property="article:modified_time" content="2023-03-02T13:54:45.304Z">
+<meta property="article:author" content="诗鸩">
+<meta property="article:tag" content="DP">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/post/e45f505b.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/post/e45f505b.html","path":"post/e45f505b.html","title":"背包九讲"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>背包九讲 | 诗鸩的笔记簿</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">诗鸩的笔记簿</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#01-%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">01 背包问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E9%9D%A2"><span class="nav-number">1.1.</span> <span class="nav-text">题面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">1.2.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E4%BC%98%E5%8C%96"><span class="nav-number">1.3.</span> <span class="nav-text">空间优化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%8C%E5%85%A8%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">完全背包问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E9%9D%A2-1"><span class="nav-number">2.1.</span> <span class="nav-text">题面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF-1"><span class="nav-number">2.2.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%8C%96"><span class="nav-number">2.3.</span> <span class="nav-text">优化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E9%87%8D%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">多重背包问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E9%9D%A2-2"><span class="nav-number">3.1.</span> <span class="nav-text">题面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF-2"><span class="nav-number">3.2.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BC%98%E5%8C%96"><span class="nav-number">3.3.</span> <span class="nav-text">二进制优化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">混合背包问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E9%9D%A2-3"><span class="nav-number">4.1.</span> <span class="nav-text">题面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF-3"><span class="nav-number">4.2.</span> <span class="nav-text">思路</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E7%BB%B4%E8%B4%B9%E7%94%A8%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">二维费用背包问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E9%9D%A2-4"><span class="nav-number">5.1.</span> <span class="nav-text">题面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF-4"><span class="nav-number">5.2.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%90%E8%97%8F%E7%9A%84%E4%BA%8C%E7%BB%B4%E6%9D%A1%E4%BB%B6"><span class="nav-number">5.3.</span> <span class="nav-text">隐藏的二维条件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text">分组背包问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E9%9D%A2-5"><span class="nav-number">6.1.</span> <span class="nav-text">题面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF-5"><span class="nav-number">6.2.</span> <span class="nav-text">思路</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%89%E4%BE%9D%E8%B5%96%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text">有依赖的背包问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E9%9D%A2-6"><span class="nav-number">7.1.</span> <span class="nav-text">题面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF-6"><span class="nav-number">7.2.</span> <span class="nav-text">思路</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%9B%E5%8C%96%E7%89%A9%E5%93%81"><span class="nav-number">8.</span> <span class="nav-text">泛化物品</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E6%96%B9%E6%A1%88"><span class="nav-number">9.</span> <span class="nav-text">背包问题方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E6%96%B9%E6%A1%88%E6%95%B0"><span class="nav-number">10.</span> <span class="nav-text">背包问题方案数</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="诗鸩"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">诗鸩</p>
+  <div class="site-description" itemprop="description">暴搜流派！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/jack_jxnu" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;jack_jxnu" rel="noopener" target="_blank">CSDN</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/e45f505b.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="背包九讲 | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          背包九讲
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-03-02 21:48:21 / 修改时间：21:54:45" itemprop="dateCreated datePublished" datetime="2023-03-02T21:48:21+08:00">2023-03-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>背包问题作为 DP 中的经典问题，网络上已经可以找到许多成体系的博客了，这篇文章仅作为本人的一份复习随笔。文中难免诸多错漏，还请见谅，更欢迎提出。</p>
+<h1 id="01-背包问题"><a href="#01-背包问题" class="headerlink" title="01 背包问题"></a>01 背包问题</h1><h2 id="题面"><a href="#题面" class="headerlink" title="题面"></a>题面</h2><p>有 N 块金子和一个容量为 M 的背包。第 i 块金子的体积是 w[i]，得到的价值是 v[i]，求将哪些金子装入背包可使价值总和最大。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p><strong>定义状态：</strong></p>
+<blockquote>
+<p>f[i][j] 表示：前 i 块金子放入一个容量为 j 的背包可以获得的最大价值。<br>将 f[i][j] 划分为 “前 i-1 块” 和 “第 i 块” 两个问题。“前 i-1 块” 是子问题，如何得到最优不应该在当前考虑，也即已知 f[i-1][j] 是最优解。</p>
+</blockquote>
+<p><strong>状态转移：</strong></p>
+<blockquote>
+<p>对于 “第 i 块” 金子，我们可以选择放或不放。不放，则 f[i][j] = f[i-1][j]；放，则需要先腾出背包空间，再将金子 i 放入。<br>状态转移方程：f[i][j] = max(f[i - 1][j], f[i - 1][j - w[i]] + v[i]);</p>
+</blockquote>
+<p><strong>初始化：</strong><br>对于本题，我们需要初始化 f[0][j]，这表示场上没有金子的情况。<br>实际上的背包问题，往往会有两种需求：</p>
+<ol>
+<li><p>刚好放满且价值最大化<br>如果要求刚好放满，那么在初始化时，f[0][0] 应该置为0，其余 f[i][j] 置为 -INF（负无穷）；这意味着后续的 f[i][j] 一定是从 f[0][0] 转移过来的，否则就会等于 -INF。</p>
+</li>
+<li><p>最大化价值就行<br>f[i][j] = 0;</p>
+</li>
+</ol>
+<h2 id="空间优化"><a href="#空间优化" class="headerlink" title="空间优化"></a>空间优化</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= N; i++)</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> j = c[i]; j &lt;= V; j++)</span><br><span class="line">		f[i][j] = <span class="built_in">max</span>(f[i - <span class="number">1</span>][j], f[i - <span class="number">1</span>][j - w[i]] + v[i]);</span><br></pre></td></tr></table></figure>
+
+<p>仔细查看上面的代码，你会发现 i-2 行的数据对第 i 行的数据转移没什么用，所以你可以考虑用滚动数组优化空间复杂度（挖个坑，不一定填）。</p>
+<p>空间复杂度从N * M 降到 2 * M 好像还不错了，如果你看得更深一点，会发现 f[i][j] 的值都是从 f[i-1][j-k] 转移过来的，和 f[i-1][j+k] 没什么关系。</p>
+<p>换句话说，如果我们倒序遍历 j，f[j+k]的空间就可以用来做别的事。</p>
+<p>因此最简单的写法诞生了：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= N; i++)</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> j = V; j &gt;= c[i]; j--)</span><br><span class="line">        f[j] = <span class="built_in">max</span>(f[j], f[j - c[i]] + w[i]);</span><br></pre></td></tr></table></figure>
+<p><em>注意这个倒序 j，以后会考。</em></p>
+<h1 id="完全背包问题"><a href="#完全背包问题" class="headerlink" title="完全背包问题"></a>完全背包问题</h1><h2 id="题面-1"><a href="#题面-1" class="headerlink" title="题面"></a>题面</h2><p>有 N 种金子和一个容量为 M 的背包。第 i 种金子的体积是 w[i]，得到的价值是 v[i]，问怎么装金子可使价值总和最大。<br><em>和 01 背包不同的是，完全背包的金子可以无限取。这也引申出一个问题：为啥不用贪心？这个问题在 01 背包的时候就应该出现了。</em></p>
+<h2 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h2><p><strong>定义状态：</strong></p>
+<blockquote>
+<p>恰如 01 背包问题，我们定义 f[i][j]：前 i 种金子放入一个容量为 j 的背包可以获得的最大价值。</p>
+</blockquote>
+<p><strong>状态转移：</strong></p>
+<blockquote>
+<p>对于 “第 i 种” 金子，我们可以选择放0、1、2……件。<br>状态转移方程：f[i][j] = max(f[i - 1][j - k * w[i]] + k * v[i])；其中 k * w[i] 应该在 [0, j] 区间内。</p>
+</blockquote>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><p>从状态转移方程不难发现，完全背包问题如果按这种办法写需要三层循环。</p>
+<p>这个时候我们可以回过头看看 01 背包的倒序 j，这玩意儿如果正序，意味着什么？</p>
+<p>01 背包倒序正是为了限定每件物品只能选择一次，要保证 f[i][j] 一定是从 f[i-1][] 转移来的；如果正序，就有可能出现这个物品被多次选择，但这正是完全背包需要的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= N; i++)</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> j = c[i]; j &gt;= V; j--)</span><br><span class="line">        f[j] = <span class="built_in">max</span>(f[j], f[j - c[i]] + w[i]);</span><br></pre></td></tr></table></figure>
+<p><em>如果还是不能理解，可以看看<a target="_blank" rel="noopener" href="https://blog.csdn.net/yandaoqiusheng/article/details/84929357">背包问题的倒序枚举与正序枚举</a>。</em></p>
+<h1 id="多重背包问题"><a href="#多重背包问题" class="headerlink" title="多重背包问题"></a>多重背包问题</h1><h2 id="题面-2"><a href="#题面-2" class="headerlink" title="题面"></a>题面</h2><p>有 N 种金子和一个容量为 M 的背包。第 i 种金子的体积是 w[i]，得到的价值是 v[i]，这种金子只有 p[i] 块，问怎么装金子可使价值总和最大。</p>
+<h2 id="思路-2"><a href="#思路-2" class="headerlink" title="思路"></a>思路</h2><p>有了完全背包的经验，不难想到一种三层循环的做法。</p>
+<blockquote>
+<p>f[i][j]=max(f[i−1][j−k∗c[i]]+k∗w[i])∣0≤k≤p[i]</p>
+</blockquote>
+<p>这个时间复杂度在大部分时候是无法满足我们要求的。</p>
+<h2 id="二进制优化"><a href="#二进制优化" class="headerlink" title="二进制优化"></a>二进制优化</h2><p>二进制优化是一种比较常见的优化方式，它成功地将 O(NMP) 的时间复杂度降低到 O(NMlogP)。</p>
+<p>假设说某种金子有 x 块，我们利用 x = 1 + 2 + 4 + 8 + …… 这一替换来优化，可以证明，在 [0, x] 之间的数字都可以用划分之后的二进制表示。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> num = <span class="built_in">min</span>(p[i], M / w[i]); <span class="comment">// V/c[i]是最多能放多少个进去，优化上界</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> k = <span class="number">1</span>; num &gt; <span class="number">0</span>; k &lt;&lt;= <span class="number">1</span>)</span><br><span class="line">	&#123; <span class="comment">// 这里的k就相当于上面例子中的1,2,4,6</span></span><br><span class="line">		<span class="keyword">if</span> (k &gt; num)</span><br><span class="line">			k = num;</span><br><span class="line">		num -= k;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = V; j &gt;= c[i] * k; j--) <span class="comment">// 01背包</span></span><br><span class="line">			f[j] = <span class="built_in">max</span>(f[j], f[j - c[i] * k] + w[i] * k);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="混合背包问题"><a href="#混合背包问题" class="headerlink" title="混合背包问题"></a>混合背包问题</h1><h2 id="题面-3"><a href="#题面-3" class="headerlink" title="题面"></a>题面</h2><p>如果将前面三个背包混合起来，也就是说，有的物品只可以取一次（01背包），有的物品可以取无限次（完全背包），有的物品可以取的次数有一个上限（多重背包），应该怎么求解呢？</p>
+<h2 id="思路-3"><a href="#思路-3" class="headerlink" title="思路"></a>思路</h2><p>我们的思路是分类讨论，依照物品的可取数目不同执行不同的代码。</p>
+<h1 id="二维费用背包问题"><a href="#二维费用背包问题" class="headerlink" title="二维费用背包问题"></a>二维费用背包问题</h1><h2 id="题面-4"><a href="#题面-4" class="headerlink" title="题面"></a>题面</h2><p>恰如我们一直提及的金子装袋问题，除却一直提到体积，重量其实也是背包的一个限制。当同时考虑重量 w[i] 和体积 g[i] 的限制时，就是二维费用背包问题。</p>
+<h2 id="思路-4"><a href="#思路-4" class="headerlink" title="思路"></a>思路</h2><p><strong>定义状态：</strong></p>
+<blockquote>
+<p>费用增加一维，状态也需要增加一维：f[i][j][k] 表示前 i 块金子在体积不超过 j，重量不超过 k 时可获得的最大价值。</p>
+</blockquote>
+<p><strong>状态转移：</strong></p>
+<blockquote>
+<p>状态转移方程：f[i][j][k] = max(f[i - 1][j - w[i]][k - g[i]] +  v[i])。</p>
+</blockquote>
+<p>如前述方法，可以只使用二维的数组：当每件物品只可以取一次时变量 j 和 k 采用逆序的循环，当物品有如完全背包问题时采用顺序的循环。当物品有如多重背包问题时可拆分物品。最终答案为f[V][M]，代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> j = V; j &gt;= w[i]; j--)</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> k = M; k &gt;= g[i]; k--)</span><br><span class="line">            f[j][k] = <span class="built_in">max</span>(f[j][k], f[j - w[i]][k - g[i]] + v[i]);</span><br></pre></td></tr></table></figure>
+
+<h2 id="隐藏的二维条件"><a href="#隐藏的二维条件" class="headerlink" title="隐藏的二维条件"></a>隐藏的二维条件</h2><p>有时候，“二维费用”的条件会被隐含在题面中。比如要求最多只能拿 T 件物品，那么可以把物品的体积看成 1。</p>
+<h1 id="分组背包问题"><a href="#分组背包问题" class="headerlink" title="分组背包问题"></a>分组背包问题</h1><h2 id="题面-5"><a href="#题面-5" class="headerlink" title="题面"></a>题面</h2><p>有 N 块金子和一个容量为 M 的背包。第 i 块金子的体积是 w[i]，得到的价值是 v[i]。<br>这些金子被划分为若干组，每组中的金子互相冲突，最多选一件。求解将哪些金子装入背包价值总和最大。</p>
+<h2 id="思路-5"><a href="#思路-5" class="headerlink" title="思路"></a>思路</h2><p><strong>定义状态：</strong></p>
+<blockquote>
+<p>这个问题变成了每组金子有若干种策略：是选本组中的某块，还是一块都不要。也就是说设 f[i][j] 表示前 i 组物品花费费用 j 所能取得的最大价值。</p>
+</blockquote>
+<p><strong>状态转移：</strong></p>
+<blockquote>
+<p>f[i][j] = max(f[i - 1][j], f[i - 1][j - w[i]] + v[i]); 金子i ∈ 组k。</p>
+</blockquote>
+<p>同理可以用一维数组：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">&#123;</span><br><span class="line">	cin &gt;&gt; s; <span class="comment">// 第i组的物品数量</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= s; j++)</span><br><span class="line">		cin &gt;&gt; w[j] &gt;&gt; v[j]; <span class="comment">// 组中每个物品的属性</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> j = V; j &gt;= <span class="number">0</span>; j--)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> k = <span class="number">1</span>; k &lt;= s; k++)</span><br><span class="line">			<span class="keyword">if</span> (j &gt;= w[k])</span><br><span class="line">				f[j] = <span class="built_in">max</span>(f[j], f[j - w[k]] + v[k]);</span><br><span class="line">	<span class="comment">// 由于每组物品只能选一个，所以可以覆盖之前组内物品最优解的来取最大值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意这里的 j 循环必须在 k 之外。这样才能保证每一组内的物品最多只会被添加一个。</p>
+<h1 id="有依赖的背包问题"><a href="#有依赖的背包问题" class="headerlink" title="有依赖的背包问题"></a>有依赖的背包问题</h1><h2 id="题面-6"><a href="#题面-6" class="headerlink" title="题面"></a>题面</h2><p>这种背包问题的物品间存在某种“依赖”的关系。也就是说，i 依赖于 j，表示若选物品 i，则必须选物品 j。</p>
+<h2 id="思路-6"><a href="#思路-6" class="headerlink" title="思路"></a>思路</h2><p>这玩意儿得配合树形dp（先占坑）。</p>
+<h1 id="泛化物品"><a href="#泛化物品" class="headerlink" title="泛化物品"></a>泛化物品</h1><h1 id="背包问题方案"><a href="#背包问题方案" class="headerlink" title="背包问题方案"></a>背包问题方案</h1><p>这种题型要求打印方案，因此不能进行空间压缩。根据结果逆推过程。</p>
+<h1 id="背包问题方案数"><a href="#背包问题方案数" class="headerlink" title="背包问题方案数"></a>背包问题方案数</h1>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/DP/" rel="tag"># DP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/post/ff2a4243.html" rel="prev" title="力扣周赛334">
+                  <i class="fa fa-chevron-left"></i> 力扣周赛334
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">诗鸩</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
