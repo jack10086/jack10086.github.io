@@ -128,7 +128,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,6 +183,102 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/882d72d5.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/post/882d72d5.html" class="post-title-link" itemprop="url">力扣周赛335</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-03-06 21:51:43 / 修改时间：21:51:44" itemprop="dateCreated datePublished" datetime="2023-03-06T21:51:43+08:00">2023-03-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="递枕头"><a href="#递枕头" class="headerlink" title="递枕头"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/pass-the-pillow/">递枕头</a></h1><p><strong>模拟：</strong>O(N)的时间复杂度，并不建议。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="type">int</span> <span class="title">passThePillow</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> time)</span> </span>&#123;</span><br><span class="line">		<span class="type">int</span> p = <span class="number">1</span>, fx = <span class="number">-1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; time; i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (p == <span class="number">1</span> || p == n)</span><br><span class="line">				fx = -fx;</span><br><span class="line">			p += fx;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> p;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>公式推导：</strong></p>
+<blockquote>
+<p>稍微把路径写长一点会发现，路径去除首位是一个循环，循环节为[2: n]+[n-1 : 1]，长度为 2<em>(n-1)；去除冗余循环节 t = time % (2</em>n-2)；<br>除去冗余的循环节后把首位加上，t += 1，此时可以发现规律：t &lt; n时，返回t；否则返回 2*n-t。<br>O(1)的时间复杂度</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="type">int</span> <span class="title">passThePillow</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> time)</span> </span>&#123;</span><br><span class="line">		<span class="type">int</span> t = (time % (n * <span class="number">2</span> - <span class="number">2</span>)) + <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">return</span> t &lt; n ? t : <span class="number">2</span> * n - t;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="二叉树中的第-K-大层和"><a href="#二叉树中的第-K-大层和" class="headerlink" title="二叉树中的第 K 大层和"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/kth-largest-sum-in-a-binary-tree/">二叉树中的第 K 大层和</a></h1><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>DFS 或 BFS 获取每层的节点和。排序后返回第k个值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode() : val(0), left(nullptr), right(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">	vector&lt;<span class="type">long</span> <span class="type">long</span>&gt; ans;</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(TreeNode *p, <span class="type">int</span> k)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (p == <span class="literal">nullptr</span>)</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		<span class="keyword">while</span> (ans.<span class="built_in">size</span>() &lt; k + <span class="number">1</span>)</span><br><span class="line">			ans.<span class="built_in">push_back</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">		ans[k] += p-&gt;val;</span><br><span class="line"></span><br><span class="line">		<span class="built_in">f</span>(p-&gt;left, k + <span class="number">1</span>);</span><br><span class="line">		<span class="built_in">f</span>(p-&gt;right, k + <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="type">long</span> <span class="type">long</span> <span class="title">kthLargestLevelSum</span><span class="params">(TreeNode *root, <span class="type">int</span> k)</span> </span>&#123;</span><br><span class="line">		<span class="built_in">f</span>(root, <span class="number">0</span>);</span><br><span class="line">		<span class="keyword">if</span> (ans.<span class="built_in">size</span>() &lt; k)</span><br><span class="line">			<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">		<span class="built_in">sort</span>(ans.<span class="built_in">begin</span>(), ans.<span class="built_in">end</span>(), <span class="built_in">greater</span>&lt;<span class="type">long</span> <span class="type">long</span>&gt;());</span><br><span class="line">		<span class="keyword">return</span> ans[k<span class="number">-1</span>];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/post/882d72d5.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1064,112 +1160,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/post/7f8a743.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/c4aa6cea.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="诗鸩">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="诗鸩的笔记簿">
-      <meta itemprop="description" content="暴搜流派！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/post/c4aa6cea.html" class="post-title-link" itemprop="url">力扣周赛318</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-11-08 12:21:47" itemprop="dateCreated datePublished" datetime="2022-11-08T12:21:47+08:00">2022-11-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-02-20 22:09:36" itemprop="dateModified" datetime="2023-02-20T22:09:36+08:00">2023-02-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="对数组执行操作"><a href="#对数组执行操作" class="headerlink" title="对数组执行操作"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/apply-operations-to-an-array/">对数组执行操作</a></h2><h3 id="题面"><a href="#题面" class="headerlink" title="题面"></a>题面</h3><p>给你一个下标从 0 开始的数组 nums ，数组大小为 n ，且由 非负 整数组成。</p>
-<p>你需要对数组执行 n - 1 步操作，其中第 i 步操作（从 0 开始计数）要求对 nums 中第 i 个元素执行下述指令：</p>
-<p>如果 nums[i] == nums[i + 1] ，则 nums[i] 的值变成原来的 2 倍，nums[i + 1] 的值变成 0 。否则，跳过这步操作。<br>在执行完 全部 操作后，将所有 0 移动 到数组的 末尾 。</p>
-<p>例如，数组 [1,0,2,0,0,1] 将所有 0 移动到末尾后变为 [1,2,1,0,0,0] 。<br>返回结果数组。</p>
-<p>注意 操作应当 依次有序 执行，而不是一次性全部执行。</p>
-<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>示例 1：</p>
-<pre><code>输入：nums = [1,2,2,1,1,0]
-输出：[1,4,2,0,0,0]
-解释：执行以下操作：
-- i = 0: nums[0] 和 nums[1] 不相等，跳过这步操作。
-- i = 1: nums[1] 和 nums[2] 相等，nums[1] 的值变成原来的 2 倍，nums[2] 的值变成 0 。数组变成 [1,4,0,1,1,0] 。
-- i = 2: nums[2] 和 nums[3] 不相等，所以跳过这步操作。
-- i = 3: nums[3] 和 nums[4] 相等，nums[3] 的值变成原来的 2 倍，nums[4] 的值变成 0 。数组变成 [1,4,0,2,0,0] 。
-- i = 4: nums[4] 和 nums[5] 相等，nums[4] 的值变成原来的 2 倍，nums[5] 的值变成 0 。数组变成 [1,4,0,2,0,0] 。
-执行完所有操作后，将 0 全部移动到数组末尾，得到结果数组 [1,4,2,0,0,0] 。</code></pre>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/post/c4aa6cea.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
