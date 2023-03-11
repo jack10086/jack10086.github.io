@@ -128,13 +128,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -183,6 +183,200 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/965b878d.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/post/965b878d.html" class="post-title-link" itemprop="url">力扣周赛321</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-12-01 21:55:27" itemprop="dateCreated datePublished" datetime="2022-12-01T21:55:27+08:00">2022-12-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-02-20 22:09:29" itemprop="dateModified" datetime="2023-02-20T22:09:29+08:00">2023-02-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="找出中枢整数"><a href="#找出中枢整数" class="headerlink" title="找出中枢整数"></a>找出中枢整数</h1><p>&emsp;&emsp;给定一个数n，中枢整数 x 的定义为 1~x的和 等于 x~n的和。<br>&emsp;&emsp;返回中枢整数，不存在则返回-1。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>&emsp;&emsp;常规思路：一层循环枚举x，当 x(x+1)/2 == (n+x)*(n-x+1)/2 时，返回中枢整数x；循环结束返回-1。<br>&emsp;&emsp;进阶思路：化简等式得：2*x^2^ == n^2^ + n，当x为整数时，中枢整数存在。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">pivotInteger</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> t = (n * n + n) / <span class="number">2</span>;</span><br><span class="line">    <span class="type">int</span> x = <span class="built_in">sqrt</span>(t);</span><br><span class="line">    <span class="keyword">if</span> (x * x == t)</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="追加字符以获得子序列"><a href="#追加字符以获得子序列" class="headerlink" title="追加字符以获得子序列"></a>追加字符以获得子序列</h1><p>&emsp;&emsp;两个仅由小写英文字母组成的字符串 s 和 t 。<br>&emsp;&emsp;现在需要通过向 s 末尾追加字符的方式使 t 变成 s 的一个子序列 ，返回需要追加的最少字符数。<br>&emsp;&emsp;子序列是一个可以由其他字符串删除部分（或不删除）字符但不改变剩下字符顺序得到的字符串。</p>
+<h2 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h2><p>&emsp;&emsp;双指针，分别指向 s 和 t，尽可能匹配，最后返回t.length()-t指针。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/post/965b878d.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/7f8a743.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/post/7f8a743.html" class="post-title-link" itemprop="url">单源最短路问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-11-27 12:30:01 / 修改时间：12:45:53" itemprop="dateCreated datePublished" datetime="2022-11-27T12:30:01+08:00">2022-11-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>&emsp;&emsp;单源最短路问题是指在给定的有向图 G 中，求解一个数组dis，其中dis[i]表示从源点start 到目标点i的最短路径长度。<br>&emsp;&emsp;解决单源最短路问题有 Dijkstra 和 Bellman-Ford 两种算法。</p>
+<h2 id="Dijkstra-算法"><a href="#Dijkstra-算法" class="headerlink" title="Dijkstra 算法"></a>Dijkstra 算法</h2><h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><ol>
+<li>初始化dis[start] = 0，其余节点的dis值为无穷大；</li>
+<li>找出一个未被标记的、dis[x]最小的节点 x，然后标记节点 x；</li>
+<li>扫描 x 节点的所有出边（x, y, z），若dis[y] &gt; dis[x]+z，则更新dis[y]；</li>
+<li>重复2、3步骤，直到所有节点被标记。</li>
+</ol>
+<p><b>1. 该算法时间复杂度为O(N^2^)，主要瓶颈在第2步查找在全局最小值的过程，可以使用二叉堆对dis进行维护，优化查找过程。</b></p>
+<p><b>2. Dijkstra算法基于贪心思想，因此只适用于所有边的长度非负的图。</b></p>
+<h3 id="堆优化的Dijkstra模板"><a href="#堆优化的Dijkstra模板" class="headerlink" title="堆优化的Dijkstra模板"></a>堆优化的Dijkstra模板</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//dijkstra模板，返回start点到每个点的最短距离</span></span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">dijkstra</span><span class="params">(vector&lt;vector&lt;pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt;&gt; &amp;g, <span class="type">int</span> start)</span> </span>&#123;</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">dis</span><span class="params">(g.size(), INF)</span></span>;</span><br><span class="line">    dis[start]=<span class="number">0</span>;</span><br><span class="line">    priority_queue&lt;pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;, vector&lt;pair&lt;<span class="type">int</span>,<span class="type">int</span>&gt;&gt; ,greater&lt;&gt;&gt; q;</span><br><span class="line">    q.<span class="built_in">emplace</span>(<span class="number">0</span>, start);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(q.<span class="built_in">size</span>())&#123;</span><br><span class="line">        <span class="keyword">auto</span> [d,x] = q.<span class="built_in">top</span>();</span><br><span class="line">        q.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">if</span>(d&gt;dis[x]) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> [y, wt]: g[x]) &#123;</span><br><span class="line">            <span class="type">int</span> new_d=dis[x]+wt;</span><br><span class="line">            <span class="keyword">if</span>(new_d &lt; dis[y])&#123;</span><br><span class="line">                dis[y]=new_d;</span><br><span class="line">                q.<span class="built_in">emplace</span>(new_d, y);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dis;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="SPFA算法"><a href="#SPFA算法" class="headerlink" title="SPFA算法"></a>SPFA算法</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/post/7f8a743.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -934,211 +1128,6 @@ k = 19</code></pre><p>二分时，mid=5并不能使得s[i]-s[i-mid]&gt;=19，但
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/post/649c2087.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/218758f6.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="诗鸩">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="诗鸩的笔记簿">
-      <meta itemprop="description" content="暴搜流派！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/post/218758f6.html" class="post-title-link" itemprop="url">C++核心编程</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-10-07 20:05:21 / 修改时间：20:20:31" itemprop="dateCreated datePublished" datetime="2022-10-07T20:05:21+08:00">2022-10-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本阶段主要针对C++==面向对象==编程技术做详细讲解，探讨C++中的核心和精髓。</p>
-<h2 id="1-内存分区模型"><a href="#1-内存分区模型" class="headerlink" title="1 内存分区模型"></a>1 内存分区模型</h2><p>C++程序在执行时，将内存大方向划分为<strong>4个区域</strong></p>
-<ul>
-<li>代码区：存放函数体的二进制代码，由操作系统进行管理的</li>
-<li>全局区：存放全局变量和静态变量以及常量</li>
-<li>栈区：由编译器自动分配释放, 存放函数的参数值,局部变量等</li>
-<li>堆区：由程序员分配和释放,若程序员不释放,程序结束时由操作系统回收</li>
-</ul>
-<p><strong>内存四区意义：</strong></p>
-<p>不同区域存放的数据，赋予不同的生命周期, 给我们更大的灵活编程</p>
-<h3 id="1-1-程序运行前"><a href="#1-1-程序运行前" class="headerlink" title="1.1 程序运行前"></a>1.1 程序运行前</h3><p>​    在程序编译后，生成了exe可执行程序，<strong>未执行该程序前</strong>分为两个区域</p>
-<p>​    <strong>代码区：</strong></p>
-<p>​        存放 CPU 执行的机器指令</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/post/218758f6.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/64ff6636.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="诗鸩">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="诗鸩的笔记簿">
-      <meta itemprop="description" content="暴搜流派！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/post/64ff6636.html" class="post-title-link" itemprop="url">牛牛VS牛妹</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-10-06 21:15:11" itemprop="dateCreated datePublished" datetime="2022-10-06T21:15:11+08:00">2022-10-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-10-07 19:06:52" itemprop="dateModified" datetime="2022-10-07T19:06:52+08:00">2022-10-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><pre><code>给你一个网格，有些点被#覆盖了不能再走，其他点是空地，现在牛牛和牛妹轮流开始将空地变成#。
-如果当前轮到的人操作之后左上角到右下角不存在通路了，当前操作的人就输了。
-通路只能是从左上角到右下角往右或者往下走的路径。
-牛牛先开始操作，如果双方都是绝顶聪明，输出最后谁赢。
-
-保证一开始给你的网格是存在一条左上角到右下角的通路的，当然，左上角与右下角都是空地。</code></pre><h3 id="输入描述"><a href="#输入描述" class="headerlink" title="输入描述"></a>输入描述</h3><pre><code>首行m，n表示网格行列。
-接下来输入网格。
-2 &lt;= m,n &lt;=20</code></pre><h3 id="输出描述"><a href="#输出描述" class="headerlink" title="输出描述"></a>输出描述</h3><pre><code>胜方名。</code></pre><h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><pre><code>2 2         4 3         3 3         4 4
-··          ···         ·##         ····
-··          ·#·         ··#         ···#
-            ·#·         #··         #···
-            ···                     ····
-
-niuniu      niumei      niumei      niuniu</code></pre><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><pre><code>非常美妙的一个思路，双方都是聪明绝顶的，所以最后一定会留出一条通路给另一方。
-容易证明，通路的格子数是m+n-1。
-即考虑所有·格子数-(m+n-1)的奇偶性</code></pre>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/post/64ff6636.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
