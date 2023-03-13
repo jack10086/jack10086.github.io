@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="转载自：题解 题面给出一颗树（树中节点 n 不超过 15 个）。请返回直径为 d 的子树棵数。 思路直径的求法有两种：  树形DP 两次DFS  思路一二进制枚举子集 + 树的直径 我们枚举每种子树集，对每个子树集求直径。当直径为 d 时，cnt[d]++；需要注意子树集中可能是森林，此时不计数。 总计有 2n 种子树集分法，每次计算直径需要 O(N) 时间，故总时间复杂度为 O(N*2n)。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="统计子树中城市之间最大距离">
+<meta property="og:url" content="http://yoursite.com/post/a5e82d27.html">
+<meta property="og:site_name" content="诗鸩的笔记簿">
+<meta property="og:description" content="转载自：题解 题面给出一颗树（树中节点 n 不超过 15 个）。请返回直径为 d 的子树棵数。 思路直径的求法有两种：  树形DP 两次DFS  思路一二进制枚举子集 + 树的直径 我们枚举每种子树集，对每个子树集求直径。当直径为 d 时，cnt[d]++；需要注意子树集中可能是森林，此时不计数。 总计有 2n 种子树集分法，每次计算直径需要 O(N) 时间，故总时间复杂度为 O(N*2n)。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic.leetcode.cn/1678548821-akRYfn-1617-cut2.png">
+<meta property="article:published_time" content="2023-03-13T13:46:26.490Z">
+<meta property="article:modified_time" content="2023-03-13T13:46:29.158Z">
+<meta property="article:author" content="诗鸩">
+<meta property="article:tag" content="树形DP">
+<meta property="article:tag" content="Floyd">
+<meta property="article:tag" content="树的直径">
+<meta property="article:tag" content="状压DP">
+<meta property="article:tag" content="乘法原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic.leetcode.cn/1678548821-akRYfn-1617-cut2.png">
+
+
+<link rel="canonical" href="http://yoursite.com/post/a5e82d27.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/post/a5e82d27.html","path":"post/a5e82d27.html","title":"统计子树中城市之间最大距离"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>统计子树中城市之间最大距离 | 诗鸩的笔记簿</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">诗鸩的笔记簿</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E9%9D%A2"><span class="nav-number">1.</span> <span class="nav-text">题面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">思路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF%E4%B8%80"><span class="nav-number">2.1.</span> <span class="nav-text">思路一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF%E4%BA%8C"><span class="nav-number">2.2.</span> <span class="nav-text">思路二</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E4%B8%80"><span class="nav-number">3.</span> <span class="nav-text">代码一</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E4%BA%8C"><span class="nav-number">4.</span> <span class="nav-text">代码二</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="诗鸩"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">诗鸩</p>
+  <div class="site-description" itemprop="description">暴搜流派！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/jack_jxnu" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;jack_jxnu" rel="noopener" target="_blank">CSDN</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/a5e82d27.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="统计子树中城市之间最大距离 | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          统计子树中城市之间最大距离
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-03-13 21:46:26 / 修改时间：21:46:29" itemprop="dateCreated datePublished" datetime="2023-03-13T21:46:26+08:00">2023-03-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>转载自：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-subtrees-with-max-distance-between-cities/solution/tu-jie-on3-mei-ju-zhi-jing-duan-dian-che-am2n/">题解</a></p>
+<h1 id="题面"><a href="#题面" class="headerlink" title="题面"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-subtrees-with-max-distance-between-cities/">题面</a></h1><p>给出一颗树（树中节点 n 不超过 15 个）。请返回直径为 d 的子树棵数。</p>
+<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>直径的求法有两种：</p>
+<ol>
+<li>树形DP</li>
+<li>两次DFS</li>
+</ol>
+<h2 id="思路一"><a href="#思路一" class="headerlink" title="思路一"></a>思路一</h2><p>二进制枚举子集 + 树的直径</p>
+<p>我们枚举每种子树集，对每个子树集求直径。当直径为 d 时，cnt[d]++；<br>需要注意子树集中可能是森林，此时不计数。</p>
+<p>总计有 2<sup>n</sup> 种子树集分法，每次计算直径需要 O(N) 时间，故总时间复杂度为 O(N*2<sup>n</sup>)。</p>
+<h2 id="思路二"><a href="#思路二" class="headerlink" title="思路二"></a>思路二</h2><p>枚举直径两端 + 乘法原理</p>
+<p>Floyd 计算全图中任意两点的最短距离。</p>
+<p><img src="https://pic.leetcode.cn/1678548821-akRYfn-1617-cut2.png" alt="alt=&quot;&quot;"></p>
+<p>暴力枚举直径两端点 x 和 y，从 x 到 y 这段简单路径作为直径，上面的点<strong>必选</strong>（d[x][z] + d[z][y] == d[x][y])。</p>
+<p>当 d[x][z] &gt; d[x][y] 或者 d[y][z] &gt; d[x][y] 时，z 在 xy 这条直径延长线上，一定<strong>不能选</strong>。</p>
+<p>当 d[x][z] == d[x][y] 时，可选，但需要去重。<br>如上图所示，d[2][1] == d[2][3] == d[2][7]，故而我们不统计编号小于 x|y 的情况，以达到去重的目的。</p>
+<p>可选点的组合根据乘法原理</p>
+<h1 id="代码一"><a href="#代码一" class="headerlink" title="代码一"></a>代码一</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">countSubgraphsForEachDiameter</span><span class="params">(<span class="type">int</span> n, vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; edges)</span> </span>&#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">g</span>(n);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> e : edges)&#123;</span><br><span class="line">            <span class="type">int</span> x = e[<span class="number">0</span>] - <span class="number">1</span>, y = e[<span class="number">1</span>] - <span class="number">1</span>;   <span class="comment">// 编号从0开始</span></span><br><span class="line">            g[x].<span class="built_in">push_back</span>(y);</span><br><span class="line">            g[y].<span class="built_in">push_back</span>(x);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">ans</span><span class="params">(n - <span class="number">1</span>)</span></span>;</span><br><span class="line">        <span class="comment">// 二进制枚举子集</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> mask = <span class="number">3</span>; mask &lt; <span class="number">1</span> &lt;&lt; n; mask++)&#123;</span><br><span class="line">            <span class="keyword">if</span>((mask &amp; (mask - <span class="number">1</span>)) == <span class="number">0</span>) <span class="keyword">continue</span>;    <span class="comment">// 起码需要两个点</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 求直径</span></span><br><span class="line">            <span class="type">int</span> vis = <span class="number">0</span>, diameter = <span class="number">0</span>;</span><br><span class="line">            </span><br><span class="line">            function&lt;<span class="type">int</span>(<span class="type">int</span>)&gt; dfs = [&amp;](<span class="type">int</span> x) -&gt; <span class="type">int</span> &#123;</span><br><span class="line">                vis |= <span class="number">1</span> &lt;&lt; x;  <span class="comment">// 标记 x 访问过</span></span><br><span class="line">                <span class="type">int</span> max_len = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">for</span>(<span class="type">int</span> y : g[x])</span><br><span class="line">                    <span class="keyword">if</span>((vis &gt;&gt; y &amp; <span class="number">1</span>) == <span class="number">0</span> &amp;&amp; mask &gt;&gt; y &amp; <span class="number">1</span>)&#123;   <span class="comment">// y 没有访问过，而且在子集 mask 中</span></span><br><span class="line">                        <span class="type">int</span> ml = <span class="built_in">dfs</span>(y) + <span class="number">1</span>;</span><br><span class="line">                        diameter = <span class="built_in">max</span>(diameter, max_len + ml);</span><br><span class="line">                        max_len = <span class="built_in">max</span>(max_len, ml);</span><br><span class="line">                    &#125;</span><br><span class="line">                <span class="keyword">return</span> max_len;</span><br><span class="line">            &#125;;</span><br><span class="line">            </span><br><span class="line">            <span class="built_in">dfs</span>(__builtin_ctz(mask));   <span class="comment">// 这个函数返回 mask 中末尾 0 的个数 </span></span><br><span class="line">            <span class="keyword">if</span>(vis == mask) </span><br><span class="line">                ans[diameter - <span class="number">1</span>]++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="代码二"><a href="#代码二" class="headerlink" title="代码二"></a>代码二</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">countSubgraphsForEachDiameter</span><span class="params">(<span class="type">int</span> n, vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; &amp;edges)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">g</span>(n);</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">dis</span>(n, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(n, <span class="number">0x3f3f3f3f</span>));</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;e : edges)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> x = e[<span class="number">0</span>] - <span class="number">1</span>, y = e[<span class="number">1</span>] - <span class="number">1</span>; <span class="comment">// 编号改为从 0 开始</span></span><br><span class="line">            g[x].<span class="built_in">push_back</span>(y);</span><br><span class="line">            g[y].<span class="built_in">push_back</span>(x); <span class="comment">// 建树</span></span><br><span class="line">            dis[x][y] = dis[y][x] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">            dis[i][i] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Floyd 求最短距离，也可以用BFS/DFS（同样是O(N^3)）</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> k = <span class="number">0</span>; k &lt; n; k++)</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; n; j++)</span><br><span class="line">                    dis[i][j] = <span class="built_in">min</span>(dis[i][j], dis[i][k] + dis[k][j]);</span><br><span class="line"></span><br><span class="line">        function&lt;<span class="type">int</span>(<span class="type">int</span>, <span class="type">int</span>, <span class="type">int</span>, <span class="type">int</span>)&gt; dfs = [&amp;](<span class="type">int</span> z, <span class="type">int</span> fa, <span class="type">int</span> x, <span class="type">int</span> y)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> cnt = <span class="number">1</span>; <span class="comment">// 能递归到这里，说明起码z可选</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> zz : g[z])</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (zz != fa &amp;&amp;                                                      <span class="comment">// 不是来时的路</span></span><br><span class="line">                    (dis[x][zz] &lt; dis[x][y] || dis[x][zz] == dis[x][y] &amp;&amp; zz &gt; y) &amp;&amp; <span class="comment">// dis[x][zz] &gt; dis[x][y]不合法;</span></span><br><span class="line">                    (dis[y][zz] &lt; dis[x][y] || dis[y][zz] == dis[x][y] &amp;&amp; zz &gt; x))   <span class="comment">// dis[x][zz] == dis[x][y] &amp;&amp; zz &lt; y 之前计算过;</span></span><br><span class="line">                    cnt *= <span class="built_in">dfs</span>(zz, z, x, y);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (dis[x][z] + dis[z][y] &gt; dis[x][y]) <span class="comment">// x是可选点</span></span><br><span class="line">                ++cnt;                             <span class="comment">// 不选 x</span></span><br><span class="line">            <span class="keyword">return</span> cnt;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">ans</span><span class="params">(n - <span class="number">1</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> j = i + <span class="number">1</span>; j &lt; n; j++)</span><br><span class="line">                ans[dis[i][j] - <span class="number">1</span>] += <span class="built_in">dfs</span>(i, <span class="number">-1</span>, i, j);</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%A0%91%E5%BD%A2DP/" rel="tag"># 树形DP</a>
+              <a href="/tags/Floyd/" rel="tag"># Floyd</a>
+              <a href="/tags/%E6%A0%91%E7%9A%84%E7%9B%B4%E5%BE%84/" rel="tag"># 树的直径</a>
+              <a href="/tags/%E7%8A%B6%E5%8E%8BDP/" rel="tag"># 状压DP</a>
+              <a href="/tags/%E4%B9%98%E6%B3%95%E5%8E%9F%E7%90%86/" rel="tag"># 乘法原理</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/post/92d8e1ad.html" rel="prev" title="Linux网络编程基础api">
+                  <i class="fa fa-chevron-left"></i> Linux网络编程基础api
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/post/1124236f.html" rel="next" title="力扣周赛336">
+                  力扣周赛336 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">诗鸩</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

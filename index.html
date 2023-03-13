@@ -128,7 +128,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -139,7 +139,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">26</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -183,6 +183,191 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/1124236f.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/post/1124236f.html" class="post-title-link" itemprop="url">力扣周赛336</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-03-13 21:46:29 / 修改时间：21:47:08" itemprop="dateCreated datePublished" datetime="2023-03-13T21:46:29+08:00">2023-03-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="统计范围内的元音字符串数"><a href="#统计范围内的元音字符串数" class="headerlink" title="统计范围内的元音字符串数"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-the-number-of-vowel-strings-in-range/">统计范围内的元音字符串数</a></h1><p>思路：枚举 + 模拟</p>
+<h1 id="重排数组以得到最大前缀分数"><a href="#重排数组以得到最大前缀分数" class="headerlink" title="重排数组以得到最大前缀分数"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/rearrange-array-to-maximize-prefix-score/">重排数组以得到最大前缀分数</a></h1><p>思路：贪心。要获取尽量多的正数前缀和，就应该把负数尽可能放在后面。且绝对值小的负数应该在绝对值大的负数前面，这样有可能多统计一些正数。</p>
+<h1 id="统计美丽子数组数目"><a href="#统计美丽子数组数目" class="headerlink" title="统计美丽子数组数目"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-the-number-of-beautiful-subarrays/">统计美丽子数组数目</a></h1><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>子数组是一段连续非空的元素序列。<br>两数异或相当于删除多个 2<sup>k</sup>。<br>故而想到异或前缀和 s。<br>如果 s[i] == s[j]，说明 i 到 j 这一段是美丽子数组。</p>
+<p>如何统计个数？<br>循环元素，计算当前前缀和 s，并查询 s 出现过的次数加入到计数中。<br>如果你此前做过<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-longest-subarray-lcci/">字母与数字</a>这种统计类的问题的话，应该很容易想到哈希表。<br>我们可以用哈希表 mp[x] 去记录 x 出现的次数、首位置、末位置。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">long</span> <span class="type">long</span> <span class="title">beautifulSubarrays</span><span class="params">(vector&lt;<span class="type">int</span>&gt; &amp;nums)</span> </span>&#123;</span><br><span class="line">        <span class="type">long</span> <span class="type">long</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> s = <span class="number">0</span>;</span><br><span class="line">        unordered_map&lt;<span class="type">int</span>, <span class="type">int</span>&gt; cnt&#123;&#123;s, <span class="number">1</span>&#125;&#125;; <span class="comment">// s[0]</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> x : nums) &#123;</span><br><span class="line">            s ^= x;</span><br><span class="line">            ans += cnt[s]++;    <span class="comment">// 先计入 ans，再 cnt[s]++。如果反过来相当于计算了空子数组。</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/post/1124236f.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/a5e82d27.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/post/a5e82d27.html" class="post-title-link" itemprop="url">统计子树中城市之间最大距离</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-03-13 21:46:26 / 修改时间：21:46:29" itemprop="dateCreated datePublished" datetime="2023-03-13T21:46:26+08:00">2023-03-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>转载自：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-subtrees-with-max-distance-between-cities/solution/tu-jie-on3-mei-ju-zhi-jing-duan-dian-che-am2n/">题解</a></p>
+<h1 id="题面"><a href="#题面" class="headerlink" title="题面"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-subtrees-with-max-distance-between-cities/">题面</a></h1><p>给出一颗树（树中节点 n 不超过 15 个）。请返回直径为 d 的子树棵数。</p>
+<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>直径的求法有两种：</p>
+<ol>
+<li>树形DP</li>
+<li>两次DFS</li>
+</ol>
+<h2 id="思路一"><a href="#思路一" class="headerlink" title="思路一"></a>思路一</h2><p>二进制枚举子集 + 树的直径</p>
+<p>我们枚举每种子树集，对每个子树集求直径。当直径为 d 时，cnt[d]++；<br>需要注意子树集中可能是森林，此时不计数。</p>
+<p>总计有 2<sup>n</sup> 种子树集分法，每次计算直径需要 O(N) 时间，故总时间复杂度为 O(N*2<sup>n</sup>)。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/post/a5e82d27.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -962,213 +1147,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/post/614ed7e0.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/895e9db.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="诗鸩">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="诗鸩的笔记簿">
-      <meta itemprop="description" content="暴搜流派！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/post/895e9db.html" class="post-title-link" itemprop="url">线程同步</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2023-02-18 21:19:53 / 修改时间：21:22:12" itemprop="dateCreated datePublished" datetime="2023-02-18T21:19:53+08:00">2023-02-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>* 转载自<a target="_blank" rel="noopener" href="https://subingwen.cn/linux/thread-sync/">爱编程的大丙</a> *</strong></p>
-<h1 id="线程同步概念"><a href="#线程同步概念" class="headerlink" title="线程同步概念"></a>线程同步概念</h1><p>假设有4个线程 ABCD，当前一个线程 A 对内存中的共享资源进行访问时，其它线程 BCD 都不可以对这块内存进行操作，直到线程 A 对这块内存访问完毕为止，BCD 其中之一才能访问这块内存，剩余的两个需要继续阻塞等待，一次类推，直至所有的线程都对这块内存操作完毕。线程对内存的这种访问方式就称之为线程同步。<br>通过概念可知：所谓的同步并不是多个线程同时对内存进行访问，而是按照先后顺序依次进行的。</p>
-<h2 id="为什么要同步？"><a href="#为什么要同步？" class="headerlink" title="为什么要同步？"></a>为什么要同步？</h2><blockquote>
-<p>在研究线程同步前，先来看一个双线程交替数数的例子：</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 50</span></span><br><span class="line"><span class="comment">// 全局变量</span></span><br><span class="line"><span class="type">int</span> number;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 线程处理函数</span></span><br><span class="line"><span class="function"><span class="type">void</span>* <span class="title">funcA_num</span><span class="params">(<span class="type">void</span>* arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;MAX; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> cur = number;</span><br><span class="line">        cur++;</span><br><span class="line">        <span class="built_in">usleep</span>(<span class="number">10</span>);</span><br><span class="line">        number = cur;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Thread A, id = %lu, number = %d\n&quot;</span>, <span class="built_in">pthread_self</span>(), number);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span>* <span class="title">funcB_num</span><span class="params">(<span class="type">void</span>* arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;MAX; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> cur = number;</span><br><span class="line">        cur++;</span><br><span class="line">        number = cur;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Thread B, id = %lu, number = %d\n&quot;</span>, <span class="built_in">pthread_self</span>(), number);</span><br><span class="line">        <span class="built_in">usleep</span>(<span class="number">5</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">pthread_t</span> p1, p2;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建两个子线程</span></span><br><span class="line">    <span class="built_in">pthread_create</span>(&amp;p1, <span class="literal">NULL</span>, funcA_num, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">pthread_create</span>(&amp;p2, <span class="literal">NULL</span>, funcB_num, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 阻塞，资源回收</span></span><br><span class="line">    <span class="built_in">pthread_join</span>(p1, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">pthread_join</span>(p2, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>编译并执行上面的测试程序，得到如下的结果：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line">$ ./a.out </span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">1</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">2</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">2</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">3</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">4</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">5</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">6</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">7</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">8</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">7</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">8</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">9</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">8</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">9</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">9</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">10</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">11</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">10</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">11</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">11</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">12</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">13</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">14</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">15</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">16</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">17</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">18</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">19</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">17</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">18</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">19</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">19</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">20</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">20</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">21</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">21</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">22</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">22</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">23</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">23</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">24</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">24</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">25</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">25</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">26</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">26</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">27</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">27</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">28</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">28</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">29</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">29</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">30</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">30</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">31</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">31</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">32</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">32</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">33</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">33</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">34</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">34</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">35</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">35</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">36</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">36</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">37</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">37</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">38</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">38</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">39</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">39</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">40</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">41</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">42</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">42</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">43</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">44</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">45</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">45</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">46</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">46</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">47</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">47</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">48</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">48</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">49</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">50</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">51</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">51</span></span><br><span class="line">Thread B, id = <span class="number">140504473724672</span>, number = <span class="number">52</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">53</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">54</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">55</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">56</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">57</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">58</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">59</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">60</span></span><br><span class="line">Thread A, id = <span class="number">140504482117376</span>, number = <span class="number">61</span></span><br></pre></td></tr></table></figure>
-<p>通过对上面例子的测试，可以看出虽然每个线程内部循环了50次，每次数一个数，但最终并没有数到100，通过输出的结果可以看到，有些数字被重复数了多次，其原因就是没有对线程进行同步处理，造成了数据的混乱。<br>（我本人在windows上运行是可以安全数到100的，但在linux上确实不行。原因：这可能是由于Windows和Linux的线程调度机制不同造成的。Windows的线程调度机制可以更好地支持多线程，因此可以更好地支持双线程代码，而Linux的线程调度机制则不太支持多线程，因此双线程代码的运行效果不太理想。——ChatGPT）</p>
-<p>两个线程在数数的时候需要分时复用 CPU 时间片，并且测试程序中调用了 sleep() 导致线程的CPU时间片没用完就被迫挂起了，这样就能让CPU的上下文切换更加频繁，更容易出现数据混乱这个现象。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/post/895e9db.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/15fc6e8c.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="诗鸩">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="诗鸩的笔记簿">
-      <meta itemprop="description" content="暴搜流派！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/post/15fc6e8c.html" class="post-title-link" itemprop="url">线程</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2023-02-17 21:32:12 / 修改时间：21:37:26" itemprop="dateCreated datePublished" datetime="2023-02-17T21:32:12+08:00">2023-02-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong><em>转载自：<a target="_blank" rel="noopener" href="https://subingwen.cn/linux/thread/">爱编程的大丙</a>，示例代码主要用是C中的线程库。</em></strong></p>
-<h2 id="线程概述"><a href="#线程概述" class="headerlink" title="线程概述"></a>线程概述</h2><p>线程是轻量级的进程（LWP：light weight process），在 Linux 环境下线程的本质仍是进程。<br>在计算机上运行的程序是一组指令及指令参数的组合，指令按照既定的逻辑控制计算机运行。操作系统会以进程为单位，分配系统资源，可以这样理解：<strong><em>进程是资源分配的最小单位，线程是操作系统调度执行的最小单位</em></strong>。</p>
-<p>先从概念上了解一下线程和进程之间的区别：</p>
-<ul>
-<li>进程有自己独立地址空间，多个线程共用一个地址空间<ul>
-<li>线程更加节省系统资源，效率可以持平甚至更高；</li>
-<li>在一个地址空间中多个线程独享<strong>栈区、寄存器（内核管理中的）</strong>；</li>
-<li>在一个地址空间中多个线程共享<strong>代码段、堆区、全局数据区、打开的文件（文件描述符表）</strong>。</li>
-</ul>
-</li>
-<li>线程是程序的最小执行单位，进程是操作系统最小的资源分配单位<ul>
-<li>每个进程对应一个虚拟地址空间，一个进程只能抢一个CPU时间片；</li>
-<li>一个地址空间中可以划分出多个线程，在有效的资源基础上，能够抢更多的CPU时间片。<br><img src="https://subingwen.cn/linux/thread/1048430-20170710134655212-558296442.png" alt="alt "></li>
-</ul>
-</li>
-<li>CPU的调度和切换：线程的上下文切换必进程要快得多<ul>
-<li>上下文切换：进程\进程分时复用CPU时间片，在切换之前会保存上一个任务的状态，下次切换回这个任务时，加载这个状态继续运行，任务从保存到再次加载这个过程就是一次上下文切换。</li>
-<li>线程更加廉价，启动和退出的速度快，对系统的冲击小。<br>$\color{red}{在处理多任务程序时使用多线程比使用多进程更有优势，但是线程并不是越多越好}$，如何控制线程的个数呢？</li>
-</ul>
-</li>
-</ul>
-<ol>
-<li>文件IO操作：文件IO对CPU的使用率不高，因此可以分时复用CPU时间片，线程的个数 = 2*CPU核心数（效率最高）。</li>
-<li>处理复杂的算法（主要是CPU进行运算，压力大），线程的个数 = CPU核心数（效率最高）。</li>
-</ol>
-<h2 id="创建线程"><a href="#创建线程" class="headerlink" title="创建线程"></a>创建线程</h2><h3 id="线程函数"><a href="#线程函数" class="headerlink" title="线程函数"></a>线程函数</h3><p>每一个线程都有一个唯一的线程ID，ID类型为<a> pthread_t </a>，这个 ID 是一个无符号长整型数，如果想要得到当前线程的线程ID，可以调用如下函数：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">pthread_t</span> <span class="title">pthread_self</span><span class="params">(<span class="type">void</span>)</span></span>;       <span class="comment">//返回当前线程的线程ID</span></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/post/15fc6e8c.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
