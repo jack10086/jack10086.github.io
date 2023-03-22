@@ -128,13 +128,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -220,9 +220,205 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-03-22 20:32:41" itemprop="dateCreated datePublished" datetime="2023-03-22T20:32:41+08:00">2023-03-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%91%A8%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">周赛</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="奇偶位数"><a href="#奇偶位数" class="headerlink" title="奇偶位数"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-even-and-odd-bits/">奇偶位数</a></h1><p>思路：模拟</p>
+<h1 id="检查骑士巡视方案"><a href="#检查骑士巡视方案" class="headerlink" title="检查骑士巡视方案"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/rearrange-array-to-maximize-prefix-score/">检查骑士巡视方案</a></h1><p>思路：</p>
+<ul>
+<li><p>赛时的思路是记录当前步数的位置 (px, py)，再 O(N) 搜索下一步的位置 (x, y)，计算两点的距离是否为 5。不是则返回 false。<br>这样出现的问题有两个：一是时间复杂度为O(N<sup>4</sup>)，二是一时没有考虑到 (0, 0)是初始位置。</p>
+</li>
+<li><p>我们可以考虑优化时间复杂度到 O(N<sup>2</sup>)，不过需要花费 O(N<sup>2</sup>) 的空间去存储坐标。</p>
+</li>
+<li><p>当然用搜索模拟，这就不讨论了。</p>
+</li>
+</ul>
+<h1 id="美丽子集的数目"><a href="#美丽子集的数目" class="headerlink" title="美丽子集的数目"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/the-number-of-beautiful-subsets">美丽子集的数目</a></h1><p>又是美丽子集，<a target="_blank" rel="noopener" href="https://jack10086.github.io/post/1124236f.html">上周赛</a>也有个美丽子数组，思路一时没跳出来。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ol>
+<li>回溯或枚举子集（子集个数为2<sup>n</sup>），可以用哈希表判断是否出现 (x-k) 和 (x+k)，该数据范围较小，使用数组来哈希。<br>其时间复杂度为 O(2<sup>N</sup>)，空间复杂度为 O(N)。</li>
+<li>赛后看了几篇动态规划的题解。记录一下思路和代码：</li>
+</ol>
+<p>按每个元素模 k 分组，并且组内排序。<br>如果两个数模 k 不同余（即不同组），那么必然无法相差 k，可以随意组合。<br>接下来考虑同组的情况：如果组内相邻的两个数 x，y 相差 k，则不能同时选；至于不相邻的，在模 k 同余的条件下，一定相差大于 k，不需要考虑。<br>设组 f 内元素个数为 m，考虑最大的数 g[m-1]（选或不选）：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/post/1124236f.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/81ce2909.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/post/81ce2909.html" class="post-title-link" itemprop="url">高性能服务器程序框架</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-03-13 21:46:29 / 修改时间：21:47:08" itemprop="dateCreated datePublished" datetime="2023-03-13T21:46:29+08:00">2023-03-13</time>
+      <time title="创建时间：2023-03-22 20:32:38 / 修改时间：20:33:08" itemprop="dateCreated datePublished" datetime="2023-03-22T20:32:38+08:00">2023-03-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">网络编程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>服务器可以解构为以下三个主要模块：<br><strong>IO处理单元：</strong><a target="_blank" rel="noopener" href="https://jack10086.github.io/post/aeafbee0.html">五种IO模型</a>和两种高效事件处理模式。<br><strong>逻辑单元：</strong>两种高效的并发模式，以及高效的逻辑处理方式——有限状态机<br><strong>存储单元：</strong>作为服务器的可选模块，我们并不讨论。</p>
+<h1 id="服务器模型"><a href="#服务器模型" class="headerlink" title="服务器模型"></a>服务器模型</h1><h2 id="C-S-模型"><a href="#C-S-模型" class="headerlink" title="C/S 模型"></a>C/S 模型</h2><p><img src="https://img-blog.csdnimg.cn/278d81a610af48088d65bac1287a8bc5.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5ZCD57Gz6aWt,size_20,color_FFFFFF,t_70,g_se,x_16" alt="alt=&quot;TCP服务器和客户端的工作流程&quot;"></p>
+<p>C/S 模型的逻辑很简单：</p>
+<ul>
+<li>服务器启动后，首先创建一个（或多个）监听 socket，并 bind 一个端口号，然后就调用 listen 函数坐等客户端的连接。</li>
+<li>服务器稳定运行后，客户端就通过调用 connect 函数向服务器发起连接。</li>
+</ul>
+<p>由于客户端的连接请求是随机到达的异步事件，服务器需要使用某种 I/O 模型来监听这一事件。上图中，服务器使用的是 I/O 复用技术之一的 select 系统调用。</p>
+<p>当监听到连接请求后，服务器就调用 accept 函数接受它，并分配一个逻辑单元为之服务。</p>
+<p>逻辑单元可以是一个子进程、子线程或其它。上图中，服务器给客户端分配的逻辑单元是由 fork 系统调用创建的子进程。</p>
+<p>逻辑单元读取客户请求，处理该请求，然后将处理结果返回给客户端。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/post/81ce2909.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/1124236f.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/post/1124236f.html" class="post-title-link" itemprop="url">力扣周赛336</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-03-13 21:46:29 / 修改时间：21:48:02" itemprop="dateCreated datePublished" datetime="2023-03-13T21:46:29+08:00">2023-03-13</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -312,7 +508,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-03-13 21:46:26 / 修改时间：21:46:29" itemprop="dateCreated datePublished" datetime="2023-03-13T21:46:26+08:00">2023-03-13</time>
+      <time title="创建时间：2023-03-13 21:46:26 / 修改时间：21:48:02" itemprop="dateCreated datePublished" datetime="2023-03-13T21:46:26+08:00">2023-03-13</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -939,214 +1135,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/post/aeafbee0.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/de7c53fe.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="诗鸩">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="诗鸩的笔记簿">
-      <meta itemprop="description" content="暴搜流派！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/post/de7c53fe.html" class="post-title-link" itemprop="url">线程池</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2023-02-20 21:47:34 / 修改时间：21:57:35" itemprop="dateCreated datePublished" datetime="2023-02-20T21:47:34+08:00">2023-02-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>转载自：<a target="_blank" rel="noopener" href="https://subingwen.cn/linux/threadpool/">爱编程的大丙</a>，同时参考了<a target="_blank" rel="noopener" href="https://subingwen.cn/linux/threadpool-cpp/">C++的写法</a>。</strong><br><strong>建议搭配视频一起食用：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1jV411J795">C语言线程池</a>、<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1364y1i7uo">C改C++版</a>。</strong></p>
-<h1 id="线程池的原理"><a href="#线程池的原理" class="headerlink" title="线程池的原理"></a>线程池的原理</h1><p>我们使用线程时就去创建一个线程，这样实现起来确实简便，但实际工程中会有一个问题：如果并发的线程数量很多，并且每个线程都是执行了一个时间很短的任务就结束了，那么频繁创建线程就会大大降低系统的效率，因为线程的销毁和创建都需要时间。</p>
-<p>那么有没有一种办法可以使得线程能够复用，即执行一个任务后不被销毁，而是可以继续执行其它任务呢？</p>
-<p>线程池是一种多线程处理形式，处理过程中将任务添加到队列，在创建线程后自动启动这些任务。线程池线程都是后台线程，每个线程都使用默认的堆栈大小，以默认的优先级运行，并处于多线程单元中。如果某个线程在托管代码中空闲（如正在等待某个事件），则线程池将插入另一个辅助线程来帮助所有处理器保持繁忙。如果所有线程池的线程都始终保持繁忙，但队列中包含挂起的工作，则线程池将在一段时间后创建另一个辅助线程，但线程的数量永远不会超过最大值。超过最大值的线程可以排队，当它们要等到其它线程完成后才能启动。</p>
-<p>在各个编程语言中都有线程池的概念，并且很多语言中直接提供了线程池，下面给大家介绍一下线程池的实现原理：</p>
-<ul>
-<li>线程池的组成主要分为 3 个部分：<ol>
-<li>任务队列，存储需要处理的任务，由工作的线程来处理这些任务<ul>
-<li>通过线程池提供的API函数，将一个待处理的任务添加到任务队列，或者从任务队列中删除</li>
-<li>已处理的任务会从任务队列中删除</li>
-<li>线程池的使用者，也就是调用线程池函数往任务队列里添加任务的线程就是生产者线程</li>
-</ul>
-</li>
-<li>工作的线程（任务队列任务的消费者），N个<ul>
-<li>线程池中维护了一定数量的工作线程，它们的作用是不停地读任务队列，从中取出任务并处理</li>
-<li>工作的线程相当于是任务队列的消费者角色</li>
-<li>如果任务队列为空，工作的线程将会被阻塞（使用条件变量\信号量阻塞）</li>
-<li>如果阻塞之后有了新任务，生产者将解除阻塞，工作线程开始工作</li>
-</ul>
-</li>
-<li>管理者线程（不处理任务队列中的任务），1个 <ul>
-<li>它的任务是周期地对任务队列中的任务数量及处于忙状态的工作线程个数进行检测  </li>
-<li>当任务过多时，可以适当地创建一些新的工作线程</li>
-<li>当任务过少时，可以适当地销毁一些工作线程<br><img src="https://subingwen.cn/linux/threadpool/R9c00030b842edb1ae3d6a2b286e53916" alt="alt=&quot;线程池工作原理&quot;"></li>
-</ul>
-</li>
-</ol>
-</li>
-</ul>
-<h1 id="任务队列"><a href="#任务队列" class="headerlink" title="任务队列"></a>任务队列</h1><h2 id="类声明"><a href="#类声明" class="headerlink" title="类声明"></a>类声明</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义任务结构体</span></span><br><span class="line"><span class="keyword">using</span> callback = <span class="built_in">void</span> (*)(<span class="type">void</span> *);</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Task</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">Task</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        function = <span class="literal">nullptr</span>;</span><br><span class="line">        arg = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">Task</span>(callback f, <span class="type">void</span> *arg)</span><br><span class="line">    &#123;</span><br><span class="line">        function = f;</span><br><span class="line">        <span class="keyword">this</span>-&gt;arg = arg;</span><br><span class="line">    &#125;</span><br><span class="line">    callback function;</span><br><span class="line">    <span class="type">void</span> *arg;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 任务队列</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TaskQueue</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">TaskQueue</span>();</span><br><span class="line">    ~<span class="built_in">TaskQueue</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加任务</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">addTask</span><span class="params">(Task &amp;task)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">addTask</span><span class="params">(callback func, <span class="type">void</span> *arg)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 取出一个任务</span></span><br><span class="line">    <span class="function">Task <span class="title">takeTask</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取当前队列中的任务个数</span></span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">taskNumber</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> m_queue.<span class="built_in">size</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">pthread_mutex_t</span> m_mutex; <span class="comment">// 互斥锁</span></span><br><span class="line">    queue&lt;Task&gt; m_queue;     <span class="comment">// 任务队列</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/post/de7c53fe.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/614ed7e0.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="诗鸩">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="诗鸩的笔记簿">
-      <meta itemprop="description" content="暴搜流派！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/post/614ed7e0.html" class="post-title-link" itemprop="url">力扣周赛333</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2023-02-20 21:47:28 / 修改时间：22:09:20" itemprop="dateCreated datePublished" datetime="2023-02-20T21:47:28+08:00">2023-02-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="合并两个二维数组-求和法"><a href="#合并两个二维数组-求和法" class="headerlink" title="合并两个二维数组-求和法"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/merge-two-2d-arrays-by-summing-values/">合并两个二维数组-求和法</a></h1><h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定两个二维整数组 A 和 B，A[i]={x, y}表示有 y 个 x ，B同理。<br>两个数组的 x 不一定相同，但一定按递增排序。<br>要求合并两个数组得到数组C，要求 C 中的也是递增排序；且每个 x 在 C 中只出现一次，x 对应的个数y为A、B中的个数和。</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ol>
-<li>简单用一个map维护，时间复杂度为O(M+N)，空间复杂度为O(M+N)；</li>
-<li>归并排序，时间复杂度同上，空间优化到O(1)</li>
-</ol>
-<h2 id="代码：归并"><a href="#代码：归并" class="headerlink" title="代码：归并"></a>代码：归并</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">mergeArrays</span>(vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; a, vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; b) &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; ans;</span><br><span class="line">        <span class="type">int</span> i=<span class="number">0</span>,m=a.<span class="built_in">size</span>();</span><br><span class="line">        <span class="type">int</span> j=<span class="number">0</span>,n=b.<span class="built_in">size</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(i&lt;m &amp;&amp; j&lt;n)&#123;</span><br><span class="line">            <span class="keyword">if</span>(a[i][<span class="number">0</span>]==b[j][<span class="number">0</span>])&#123;</span><br><span class="line">                ans.<span class="built_in">push_back</span>(&#123;a[i][<span class="number">0</span>], a[i][<span class="number">1</span>]+b[j][<span class="number">1</span>]&#125;);</span><br><span class="line">                i++;j++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(a[i][<span class="number">0</span>]&lt;b[j][<span class="number">0</span>])&#123;</span><br><span class="line">                ans.<span class="built_in">push_back</span>(a[i]);</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                ans.<span class="built_in">push_back</span>(b[j]);</span><br><span class="line">                j++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(i&lt;m)</span><br><span class="line">            ans.<span class="built_in">push_back</span>(a[i++]);</span><br><span class="line">        <span class="keyword">while</span>(j&lt;n)</span><br><span class="line">            ans.<span class="built_in">push_back</span>(b[j++]);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h1 id="将整数减到零的最少操作次数"><a href="#将整数减到零的最少操作次数" class="headerlink" title="将整数减到零的最少操作次数"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-operations-to-reduce-an-integer-to-0/">将整数减到零的最少操作次数</a></h1><h2 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定一个正整数n(&lt;1e5)，可以执行以下操作任意次：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/post/614ed7e0.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

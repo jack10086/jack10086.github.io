@@ -20,20 +20,20 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="统计范围内的元音字符串数思路：枚举 + 模拟 重排数组以得到最大前缀分数思路：贪心。要获取尽量多的正数前缀和，就应该把负数尽可能放在后面。且绝对值小的负数应该在绝对值大的负数前面，这样有可能多统计一些正数。 统计美丽子数组数目思路子数组是一段连续非空的元素序列。两数异或相当于删除多个 2k。故而想到异或前缀和 s。如果 s[i] &#x3D;&#x3D; s[j]，说明 i 到 j 这一段是美丽子数组。 如何统计个数">
+    <meta name="description" content="奇偶位数思路：模拟 检查骑士巡视方案思路：  赛时的思路是记录当前步数的位置 (px, py)，再 O(N) 搜索下一步的位置 (x, y)，计算两点的距离是否为 5。不是则返回 false。这样出现的问题有两个：一是时间复杂度为O(N4)，二是一时没有考虑到 (0, 0)是初始位置。  我们可以考虑优化时间复杂度到 O(N2)，不过需要花费 O(N2) 的空间去存储坐标。  当然用搜索模拟，这就">
 <meta property="og:type" content="article">
 <meta property="og:title" content="力扣周赛336">
 <meta property="og:url" content="http://yoursite.com/post/1124236f.html">
 <meta property="og:site_name" content="诗鸩的笔记簿">
-<meta property="og:description" content="统计范围内的元音字符串数思路：枚举 + 模拟 重排数组以得到最大前缀分数思路：贪心。要获取尽量多的正数前缀和，就应该把负数尽可能放在后面。且绝对值小的负数应该在绝对值大的负数前面，这样有可能多统计一些正数。 统计美丽子数组数目思路子数组是一段连续非空的元素序列。两数异或相当于删除多个 2k。故而想到异或前缀和 s。如果 s[i] &#x3D;&#x3D; s[j]，说明 i 到 j 这一段是美丽子数组。 如何统计个数">
+<meta property="og:description" content="奇偶位数思路：模拟 检查骑士巡视方案思路：  赛时的思路是记录当前步数的位置 (px, py)，再 O(N) 搜索下一步的位置 (x, y)，计算两点的距离是否为 5。不是则返回 false。这样出现的问题有两个：一是时间复杂度为O(N4)，二是一时没有考虑到 (0, 0)是初始位置。  我们可以考虑优化时间复杂度到 O(N2)，不过需要花费 O(N2) 的空间去存储坐标。  当然用搜索模拟，这就">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-03-13T13:46:29.238Z">
-<meta property="article:modified_time" content="2023-03-13T13:47:08.778Z">
+<meta property="article:published_time" content="2023-03-22T12:32:41.503Z">
+<meta property="article:modified_time" content="2023-03-22T12:32:41.903Z">
 <meta property="article:author" content="诗鸩">
-<meta property="article:tag" content="周赛">
 <meta property="article:tag" content="哈希表">
+<meta property="article:tag" content="思维">
+<meta property="article:tag" content="DP">
 <meta property="article:tag" content="枚举">
-<meta property="article:tag" content="贪心">
 <meta name="twitter:card" content="summary">
 
 
@@ -120,7 +120,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1%E8%8C%83%E5%9B%B4%E5%86%85%E7%9A%84%E5%85%83%E9%9F%B3%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">统计范围内的元音字符串数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%87%8D%E6%8E%92%E6%95%B0%E7%BB%84%E4%BB%A5%E5%BE%97%E5%88%B0%E6%9C%80%E5%A4%A7%E5%89%8D%E7%BC%80%E5%88%86%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">重排数组以得到最大前缀分数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1%E7%BE%8E%E4%B8%BD%E5%AD%90%E6%95%B0%E7%BB%84%E6%95%B0%E7%9B%AE"><span class="nav-number">3.</span> <span class="nav-text">统计美丽子数组数目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">3.1.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">3.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%8C%E6%88%90%E6%89%80%E6%9C%89%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%9C%80%E5%B0%91%E6%97%B6%E9%97%B4"><span class="nav-number">4.</span> <span class="nav-text">完成所有任务的最少时间</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF-1"><span class="nav-number">4.1.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="nav-number">4.2.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A5%87%E5%81%B6%E4%BD%8D%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">奇偶位数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E9%AA%91%E5%A3%AB%E5%B7%A1%E8%A7%86%E6%96%B9%E6%A1%88"><span class="nav-number">2.</span> <span class="nav-text">检查骑士巡视方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BE%8E%E4%B8%BD%E5%AD%90%E9%9B%86%E7%9A%84%E6%95%B0%E7%9B%AE"><span class="nav-number">3.</span> <span class="nav-text">美丽子集的数目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">3.1.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">3.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E6%93%8D%E4%BD%9C%E5%90%8E%E7%9A%84%E6%9C%80%E5%A4%A7-MEX"><span class="nav-number">4.</span> <span class="nav-text">执行操作后的最大 MEX</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF-1"><span class="nav-number">4.1.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="nav-number">4.2.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -135,13 +135,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -228,9 +228,8 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2023-03-13 21:46:29 / 修改时间：21:47:08" itemprop="dateCreated datePublished" datetime="2023-03-13T21:46:29+08:00">2023-03-13</time>
+      <time title="创建时间：2023-03-22 20:32:41" itemprop="dateCreated datePublished" datetime="2023-03-22T20:32:41+08:00">2023-03-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -238,7 +237,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+          <a href="/categories/%E5%91%A8%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">周赛</span></a>
         </span>
     </span>
 
@@ -259,16 +258,42 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="统计范围内的元音字符串数"><a href="#统计范围内的元音字符串数" class="headerlink" title="统计范围内的元音字符串数"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-the-number-of-vowel-strings-in-range/">统计范围内的元音字符串数</a></h1><p>思路：枚举 + 模拟</p>
-<h1 id="重排数组以得到最大前缀分数"><a href="#重排数组以得到最大前缀分数" class="headerlink" title="重排数组以得到最大前缀分数"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/rearrange-array-to-maximize-prefix-score/">重排数组以得到最大前缀分数</a></h1><p>思路：贪心。要获取尽量多的正数前缀和，就应该把负数尽可能放在后面。且绝对值小的负数应该在绝对值大的负数前面，这样有可能多统计一些正数。</p>
-<h1 id="统计美丽子数组数目"><a href="#统计美丽子数组数目" class="headerlink" title="统计美丽子数组数目"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-the-number-of-beautiful-subarrays/">统计美丽子数组数目</a></h1><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>子数组是一段连续非空的元素序列。<br>两数异或相当于删除多个 2<sup>k</sup>。<br>故而想到异或前缀和 s。<br>如果 s[i] == s[j]，说明 i 到 j 这一段是美丽子数组。</p>
-<p>如何统计个数？<br>循环元素，计算当前前缀和 s，并查询 s 出现过的次数加入到计数中。<br>如果你此前做过<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-longest-subarray-lcci/">字母与数字</a>这种统计类的问题的话，应该很容易想到哈希表。<br>我们可以用哈希表 mp[x] 去记录 x 出现的次数、首位置、末位置。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">long</span> <span class="type">long</span> <span class="title">beautifulSubarrays</span><span class="params">(vector&lt;<span class="type">int</span>&gt; &amp;nums)</span> </span>&#123;</span><br><span class="line">        <span class="type">long</span> <span class="type">long</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> s = <span class="number">0</span>;</span><br><span class="line">        unordered_map&lt;<span class="type">int</span>, <span class="type">int</span>&gt; cnt&#123;&#123;s, <span class="number">1</span>&#125;&#125;; <span class="comment">// s[0]</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> x : nums) &#123;</span><br><span class="line">            s ^= x;</span><br><span class="line">            ans += cnt[s]++;    <span class="comment">// 先计入 ans，再 cnt[s]++。如果反过来相当于计算了空子数组。</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h1 id="完成所有任务的最少时间"><a href="#完成所有任务的最少时间" class="headerlink" title="完成所有任务的最少时间"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-time-to-complete-all-tasks/">完成所有任务的最少时间</a></h1><p>今天掉大分，这其实就是一道简单的贪心题，甚至之前也做过不少同类型题。但赛中却没有做出来。<br>否则今天这篇题解我也不一定会写。<br>谨记此题——痛哭流涕！</p>
-<h2 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h2><p>贪心，按照右端点排序（左端点如何不重要，排序也许能降低一丢丢时间消耗）。</p>
-<p>对于 tasks[i] 来说，其右侧的任务要么和它无关，要么包含它的区间<strong>后缀</strong>。</p>
-<p>综上两点，我们遍历排序后的任务，先统计区间内的运行时间点。如果运行时间不足，就尽量把时间安排在末端，以满足后面任务的需求。</p>
-<h2 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">findMinimumTime</span><span class="params">(vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; tasks)</span> </span>&#123;</span><br><span class="line">        <span class="type">bool</span> v[<span class="number">2020</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">sort</span>(tasks.<span class="built_in">begin</span>(), tasks.<span class="built_in">end</span>(), [](<span class="keyword">auto</span> &amp;a, <span class="keyword">auto</span>&amp; b) &#123;</span><br><span class="line">            <span class="keyword">return</span> a[<span class="number">1</span>] &lt; b[<span class="number">1</span>];</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="type">int</span> ans=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;t : tasks)&#123;</span><br><span class="line">            <span class="type">int</span> l = t[<span class="number">0</span>], r = t[<span class="number">1</span>], d = t[<span class="number">2</span>];</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> i = l; i &lt;= r; i++)</span><br><span class="line">                d -= v[i];</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> i = r; d &gt; <span class="number">0</span>; i--)&#123;</span><br><span class="line">                <span class="keyword">if</span>(!v[i])&#123;</span><br><span class="line">                    v[i] = <span class="number">1</span>;</span><br><span class="line">                    d--;</span><br><span class="line">                    ans++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+        <h1 id="奇偶位数"><a href="#奇偶位数" class="headerlink" title="奇偶位数"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-even-and-odd-bits/">奇偶位数</a></h1><p>思路：模拟</p>
+<h1 id="检查骑士巡视方案"><a href="#检查骑士巡视方案" class="headerlink" title="检查骑士巡视方案"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/rearrange-array-to-maximize-prefix-score/">检查骑士巡视方案</a></h1><p>思路：</p>
+<ul>
+<li><p>赛时的思路是记录当前步数的位置 (px, py)，再 O(N) 搜索下一步的位置 (x, y)，计算两点的距离是否为 5。不是则返回 false。<br>这样出现的问题有两个：一是时间复杂度为O(N<sup>4</sup>)，二是一时没有考虑到 (0, 0)是初始位置。</p>
+</li>
+<li><p>我们可以考虑优化时间复杂度到 O(N<sup>2</sup>)，不过需要花费 O(N<sup>2</sup>) 的空间去存储坐标。</p>
+</li>
+<li><p>当然用搜索模拟，这就不讨论了。</p>
+</li>
+</ul>
+<h1 id="美丽子集的数目"><a href="#美丽子集的数目" class="headerlink" title="美丽子集的数目"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/the-number-of-beautiful-subsets">美丽子集的数目</a></h1><p>又是美丽子集，<a target="_blank" rel="noopener" href="https://jack10086.github.io/post/1124236f.html">上周赛</a>也有个美丽子数组，思路一时没跳出来。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ol>
+<li>回溯或枚举子集（子集个数为2<sup>n</sup>），可以用哈希表判断是否出现 (x-k) 和 (x+k)，该数据范围较小，使用数组来哈希。<br>其时间复杂度为 O(2<sup>N</sup>)，空间复杂度为 O(N)。</li>
+<li>赛后看了几篇动态规划的题解。记录一下思路和代码：</li>
+</ol>
+<p>按每个元素模 k 分组，并且组内排序。<br>如果两个数模 k 不同余（即不同组），那么必然无法相差 k，可以随意组合。<br>接下来考虑同组的情况：如果组内相邻的两个数 x，y 相差 k，则不能同时选；至于不相邻的，在模 k 同余的条件下，一定相差大于 k，不需要考虑。<br>设组 f 内元素个数为 m，考虑最大的数 g[m-1]（选或不选）：</p>
+<ul>
+<li>不选，问题转化为一个 m-1 个数的子问题。</li>
+<li>选，<ul>
+<li>有 2<sup>c</sup>-1 种方案，c 为 g[m-1] 的出现次数。</li>
+<li>如果 g[m-1]-g[m-2] = k，那么 g[m-2] 一定不能选，分解为 m-2 个数的子问题。</li>
+<li>如果 g[m-1]-g[m-2] != k，那么 g[m-2] 随意，分解为 m-1 个数的子问题。</li>
+</ul>
+</li>
+<li>定义 f[i] 表示前 i 个元素的方案数，可以得到一个转移方程：<ul>
+<li>如果 g[i]−g[i−1]=k，那么 f[i]=f[i−1]+f[i−2]⋅(2<sup>ci</sup>-1)。</li>
+<li>如果 g[i]−g[i−1]!=k，那么 f[i]=f[i−1]⋅2<sup>ci</sup>。</li>
+</ul>
+</li>
+</ul>
+<p>动态规划思路的时间复杂度为 O(NlogN)，空间复杂度为 O(N)。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">beautifulSubsets</span><span class="params">(vector&lt;<span class="type">int</span>&gt; &amp;nums, <span class="type">int</span> k)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 把每个数按 %k 分组</span></span><br><span class="line">        unordered_map&lt;<span class="type">int</span>, map&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt; groups;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> x : nums)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> t = (x % k + k) % k; <span class="comment">// t表示x的组号</span></span><br><span class="line">            groups[t][x]++;          <span class="comment">// groups[t][x]表示第 t 组里有几个x</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> ans = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;[_, g] : groups) <span class="comment">// 计算组内选法</span></span><br><span class="line">        &#123;</span><br><span class="line"></span><br><span class="line">            <span class="type">int</span> m = g.<span class="built_in">size</span>(), f[m + <span class="number">1</span>];</span><br><span class="line">            <span class="comment">// map是有序的</span></span><br><span class="line">            <span class="keyword">auto</span> it = g.<span class="built_in">begin</span>();</span><br><span class="line">            f[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">            f[<span class="number">1</span>] = <span class="number">1</span> &lt;&lt; it-&gt;second;</span><br><span class="line">            it++;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; it != g.<span class="built_in">end</span>(); it++, i++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (it-&gt;first - <span class="built_in">prev</span>(it)-&gt;first == k)</span><br><span class="line">                    f[i] = f[i - <span class="number">1</span>] + f[i - <span class="number">2</span>] * ((<span class="number">1</span> &lt;&lt; it-&gt;second) - <span class="number">1</span>);</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    f[i] = f[i - <span class="number">1</span>] &lt;&lt; it-&gt;second;</span><br><span class="line">            &#125;</span><br><span class="line">            ans *= f[m];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans - <span class="number">1</span>; <span class="comment">// 去掉空集</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="执行操作后的最大-MEX"><a href="#执行操作后的最大-MEX" class="headerlink" title="执行操作后的最大 MEX"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/smallest-missing-non-negative-integer-after-operations/">执行操作后的最大 MEX</a></h1><h2 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h2><p>一个简单的思维题，需要知道在模 k 运算下，1 和 1+n*k 是等价的（暂且称为同余组）。<br>所以我们只需要用 v[i] 记录数组中模 k 后值为 i 的元素个数。<br>然后查找 v 数组的最小值 c 及其下标 x。<br>可以想到，前 c * k + x - 1 个数一定可以通过同余组中的元素加减 k 来得到。<br>所以第 c * k + x 个数就是 mex。 </p>
+<h2 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">findSmallestInteger</span><span class="params">(vector&lt;<span class="type">int</span>&gt; &amp;nums, <span class="type">int</span> value)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">v</span><span class="params">(value, <span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="type">int</span> n = nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> x : nums)</span><br><span class="line">            v[((x % value) + value) % value]++;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> c = v[<span class="number">0</span>], k = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; value; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (c &gt; v[i]) &#123;</span><br><span class="line">                c = v[i];</span><br><span class="line">                k = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> c * value + k;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -278,18 +303,18 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E5%91%A8%E8%B5%9B/" rel="tag"># 周赛</a>
               <a href="/tags/%E5%93%88%E5%B8%8C%E8%A1%A8/" rel="tag"># 哈希表</a>
+              <a href="/tags/%E6%80%9D%E7%BB%B4/" rel="tag"># 思维</a>
+              <a href="/tags/DP/" rel="tag"># DP</a>
               <a href="/tags/%E6%9E%9A%E4%B8%BE/" rel="tag"># 枚举</a>
-              <a href="/tags/%E8%B4%AA%E5%BF%83/" rel="tag"># 贪心</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/post/a5e82d27.html" rel="prev" title="统计子树中城市之间最大距离">
-                  <i class="fa fa-chevron-left"></i> 统计子树中城市之间最大距离
+                <a href="/post/81ce2909.html" rel="prev" title="高性能服务器程序框架">
+                  <i class="fa fa-chevron-left"></i> 高性能服务器程序框架
                 </a>
             </div>
             <div class="post-nav-item">

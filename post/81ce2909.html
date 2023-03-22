@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="服务器可以解构为以下三个主要模块：IO处理单元：五种IO模型和两种高效事件处理模式。逻辑单元：两种高效的并发模式，以及高效的逻辑处理方式——有限状态机存储单元：作为服务器的可选模块，我们并不讨论。 服务器模型C&#x2F;S 模型 C&#x2F;S 模型的逻辑很简单：  服务器启动后，首先创建一个（或多个）监听 socket，并 bind 一个端口号，然后就调用 listen 函数坐等客户端的连接。 服务器稳定运行后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高性能服务器程序框架">
+<meta property="og:url" content="http://yoursite.com/post/81ce2909.html">
+<meta property="og:site_name" content="诗鸩的笔记簿">
+<meta property="og:description" content="服务器可以解构为以下三个主要模块：IO处理单元：五种IO模型和两种高效事件处理模式。逻辑单元：两种高效的并发模式，以及高效的逻辑处理方式——有限状态机存储单元：作为服务器的可选模块，我们并不讨论。 服务器模型C&#x2F;S 模型 C&#x2F;S 模型的逻辑很简单：  服务器启动后，首先创建一个（或多个）监听 socket，并 bind 一个端口号，然后就调用 listen 函数坐等客户端的连接。 服务器稳定运行后">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/278d81a610af48088d65bac1287a8bc5.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5ZCD57Gz6aWt,size_20,color_FFFFFF,t_70,g_se,x_16">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-b542c9c71e9b2f17616e7e268cb17243_720w.webp">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-9f9275a4b8a821ef929cebcb73a9281b_720w.webp">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/07027de695c840609848a5080ca607ec.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5ZCD57Gz6aWt,size_20,color_FFFFFF,t_70,g_se,x_16">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-ad4a09e1d05f8818e36c3426bc20663b_720w.webp">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-ad07720d62393e453f46f3e55885ee07_720w.webp">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-699b97b9ed25d0c7ae0dd41593da0ba5_r.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-5e757d09c1f7a7ca3801cfa4f3fe15e6_720w.webp">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-b5b4603f395269b69287a43a896d1882_720w.webp">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-94eee2a9691e15fa199c76fbcf789da9_720w.webp">
+<meta property="article:published_time" content="2023-03-22T12:32:38.155Z">
+<meta property="article:modified_time" content="2023-03-22T12:33:08.818Z">
+<meta property="article:author" content="诗鸩">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/278d81a610af48088d65bac1287a8bc5.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5ZCD57Gz6aWt,size_20,color_FFFFFF,t_70,g_se,x_16">
+
+
+<link rel="canonical" href="http://yoursite.com/post/81ce2909.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/post/81ce2909.html","path":"post/81ce2909.html","title":"高性能服务器程序框架"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>高性能服务器程序框架 | 诗鸩的笔记簿</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">诗鸩的笔记簿</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">服务器模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#C-S-%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.1.</span> <span class="nav-text">C&#x2F;S 模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P2P-%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">P2P 模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B%E6%A1%86%E6%9E%B6"><span class="nav-number">2.</span> <span class="nav-text">服务器编程框架</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#I-O-%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">I&#x2F;O 模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E9%AB%98%E6%95%88%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">两种高效的事件处理模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reactor-%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.1.</span> <span class="nav-text">Reactor 模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Proactor-%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.2.</span> <span class="nav-text">Proactor 模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F-Proactor-%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.3.</span> <span class="nav-text">模拟 Proactor 模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E9%AB%98%E6%95%88%E7%9A%84%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">两种高效的并发模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8A%E5%90%8C%E6%AD%A5-%E5%8D%8A%E5%BC%82%E6%AD%A5%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.1.</span> <span class="nav-text">半同步&#x2F;半异步模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8A%E5%90%8C%E6%AD%A5-%E5%8D%8A%E5%8F%8D%E5%BA%94%E5%A0%86"><span class="nav-number">5.1.1.</span> <span class="nav-text">半同步&#x2F;半反应堆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E6%95%88%E7%9A%84%E5%8D%8A%E5%90%8C%E6%AD%A5%E5%8D%8A%E5%BC%82%E6%AD%A5%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.1.2.</span> <span class="nav-text">高效的半同步半异步模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%86%E5%AF%BC%E8%80%85-%E8%BF%BD%E9%9A%8F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.2.</span> <span class="nav-text">领导者&#x2F;追随者模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="nav-number">6.</span> <span class="nav-text">有限状态机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E9%AB%98%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%80%A7%E8%83%BD%E7%9A%84%E5%85%B6%E5%AE%83%E5%BB%BA%E8%AE%AE"><span class="nav-number">7.</span> <span class="nav-text">提高服务器性能的其它建议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%A0"><span class="nav-number">7.1.</span> <span class="nav-text">池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%8D%E5%88%B6"><span class="nav-number">7.2.</span> <span class="nav-text">数据复制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2%E5%92%8C%E9%94%81"><span class="nav-number">7.3.</span> <span class="nav-text">上下文切换和锁</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="诗鸩"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">诗鸩</p>
+  <div class="site-description" itemprop="description">暴搜流派！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/jack_jxnu" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;jack_jxnu" rel="noopener" target="_blank">CSDN</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/81ce2909.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="高性能服务器程序框架 | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          高性能服务器程序框架
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-03-22 20:32:38 / 修改时间：20:33:08" itemprop="dateCreated datePublished" datetime="2023-03-22T20:32:38+08:00">2023-03-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">网络编程</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>服务器可以解构为以下三个主要模块：<br><strong>IO处理单元：</strong><a target="_blank" rel="noopener" href="https://jack10086.github.io/post/aeafbee0.html">五种IO模型</a>和两种高效事件处理模式。<br><strong>逻辑单元：</strong>两种高效的并发模式，以及高效的逻辑处理方式——有限状态机<br><strong>存储单元：</strong>作为服务器的可选模块，我们并不讨论。</p>
+<h1 id="服务器模型"><a href="#服务器模型" class="headerlink" title="服务器模型"></a>服务器模型</h1><h2 id="C-S-模型"><a href="#C-S-模型" class="headerlink" title="C/S 模型"></a>C/S 模型</h2><p><img src="https://img-blog.csdnimg.cn/278d81a610af48088d65bac1287a8bc5.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5ZCD57Gz6aWt,size_20,color_FFFFFF,t_70,g_se,x_16" alt="alt=&quot;TCP服务器和客户端的工作流程&quot;"></p>
+<p>C/S 模型的逻辑很简单：</p>
+<ul>
+<li>服务器启动后，首先创建一个（或多个）监听 socket，并 bind 一个端口号，然后就调用 listen 函数坐等客户端的连接。</li>
+<li>服务器稳定运行后，客户端就通过调用 connect 函数向服务器发起连接。</li>
+</ul>
+<p>由于客户端的连接请求是随机到达的异步事件，服务器需要使用某种 I/O 模型来监听这一事件。上图中，服务器使用的是 I/O 复用技术之一的 select 系统调用。</p>
+<p>当监听到连接请求后，服务器就调用 accept 函数接受它，并分配一个逻辑单元为之服务。</p>
+<p>逻辑单元可以是一个子进程、子线程或其它。上图中，服务器给客户端分配的逻辑单元是由 fork 系统调用创建的子进程。</p>
+<p>逻辑单元读取客户请求，处理该请求，然后将处理结果返回给客户端。</p>
+<p>客户端收到服务器反馈的结果后，可以继续想服务器发送请求，也可以立即主动关闭连接。如果客户端主动关闭连接，服务器则被动关闭连接。至此双方通信结束。</p>
+<p>需要注意：服务器在处理一个客户端请求的同时还会继续监听其它客户端的请求。上图中服务器是通过 select 系统调用实现的同时监听多个客户请求。</p>
+<p>C/S 模型非常适合资源相对集中的场合，并且它的实现也很简单，但其缺点也很明显：服务器是通信的中心，当访问量过大时，可能所有的客户都将得到很慢的响应。</p>
+<h2 id="P2P-模型"><a href="#P2P-模型" class="headerlink" title="P2P 模型"></a>P2P 模型</h2><p>P2P（Peer to Peer，点对点）模型比 C/S 模型更符合网络通信的实际情况，它摒弃了以服务器为中心的格局，让网络上所有主机重新回归对等的地位。</p>
+<p>P2P 模型使得每台机器在消耗服务的同时也给别人提供服务，这样资源能够充分、自由地共享。云计算机群可以看做 P2P 模型的一个典范。但 P2P 模型的缺点也很明显：用户之间的传输请求过多时，网络的负载将加重。<br><img src="https://pic4.zhimg.com/80/v2-b542c9c71e9b2f17616e7e268cb17243_720w.webp" alt="alt=&quot;两种P2P模型&quot;"><br>此外，P2P 模型的主机之间很难互相发现，因此实际使用的 P2P 模型一般带有一个专门的发现服务器。这个发现服务器通常提供查找服务（甚至还提供内容服务），使每个客户都能尽快找到自己需要的资源。</p>
+<p>从编程角度来看，P2P 模型即 C/S 模型的拓展：每台主机既是服务器又是客户端。</p>
+<h1 id="服务器编程框架"><a href="#服务器编程框架" class="headerlink" title="服务器编程框架"></a>服务器编程框架</h1><p>虽然服务器程序的种类繁多，但其基本框架都是一样的，不同之处在于逻辑处理。<br><img src="https://pic4.zhimg.com/80/v2-9f9275a4b8a821ef929cebcb73a9281b_720w.webp" alt="alt=&quot;服务器基本框架&quot;"><br>上图既能用来描述一台服务器，又能描述一个服务器集群。就单个服务器程序来说：</p>
+<ul>
+<li>I/O 处理单元：I/O 处理单元是服务器管理客户连接的模块。它的主要工作是：等待并接受新的客户连接，接收客户数据，将服务器响应数据返回给客户端。需要注意：数据的收发不一定在 I/O 处理单元中执行，也可能在逻辑单元中执行，其具体实现取决于事件处理模式（见后文）。</li>
+<li>逻辑单元：通常是一个业务进程或线程。它分析并处理客户数据，然后将结果传递给 I/O 处理单元或者直接发送给客户端（取决于事件处理模式）。</li>
+<li>网络存储单元：本地数据库、文件或缓存。</li>
+<li>请求队列：各单元之间的通信方式的抽象。I/O 处理单元接收到客户请求时，需要以某种方式通知一个逻辑单元来处理该请求。同样多个逻辑单元同时访问一个存储单元时，也需要采用某种机制来协调处理竞态条件。请求队列通常被实现为池的一部分（见后文）。对于服务器机群来说，请求队列是各台服务器之间预先建立的永久的、静态的 TCP 连接。因为避免了动态建立 TCP 连接的额外开销，这种 TCP 连接能够提高服务器之间交换数据的效率。</li>
+</ul>
+<h1 id="I-O-模型"><a href="#I-O-模型" class="headerlink" title="I/O 模型"></a>I/O 模型</h1><p>四种 I/O 模型的对比如下：<br><img src="https://img-blog.csdnimg.cn/07027de695c840609848a5080ca607ec.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5ZCD57Gz6aWt,size_20,color_FFFFFF,t_70,g_se,x_16" alt="alt=&quot;I/O模型对比&quot;"><br>细节可以转向<a target="_blank" rel="noopener" href="https://jack10086.github.io/post/aeafbee0.html">IO模型</a>这篇博文。</p>
+<p>socket 在创建时默认是阻塞的。我们可以给 socket 系统调用的第二个参数传递 SOCK_NONBLOCK 标志，或者通过 fctnl 系统调用的 F_SETFL 命令，将其设置为非阻塞的。<br>但需要认识到：阻塞和非阻塞的概念能应用于所有文件描述符，而不仅仅是 socket。<strong>我们称阻塞的文件描述符为 阻塞I/O，称非阻塞的文件描述符为 非阻塞I/O</strong>。</p>
+<p>针对阻塞 IO 执行的系统调用可能因为无法立即完成而被操作系统挂起，直到等待的事件发生为止。</p>
+<ul>
+<li>比如：客户端通过 connect 向服务器发起连接时，connect 首先发送同步报文段给服务器，然后等待服务器返回确认报文段。如果服务器的确认报文段没有立即达到客户端，则 connect 调用将被挂起，直到客户端收到确认报文段并唤醒 connect 调用。socket 基础 API 中，可能被阻塞的系统调用包括 accept、send、recv 和 connect。</li>
+</ul>
+<p>针对非阻塞 IO 执行的系统调用总是立即返回，而不管事件是否已经发生。如果事件没有立即发生，这些系统调用就返回 -1，和出错的情况一样，此时我们必须根据 errno 来区分这两种情况。</p>
+<p>很显然，我们只有在事件已经发生的情况下操作非阻塞IO，才能提高程序的效率。因此，非阻塞 IO 通常要和其它 IO 通知机制一起使用，比如 IO 复用和 SIGIO 信号。</p>
+<p>IO 复用是最常使用的 IO 通知机制。它指的是，应用程序通过 IO 复用函数向内核注册一组事件，内核通过 IO 复用函数把其中就绪的时间通知给应用程序。Linux 常见用的 IO 复用函数是 epoll_wait、poll、select。<br>需要指出的是：IO 复用函数本身是阻塞的，它们能提高程序效率的原因在于它们具有同时监听多个 IO 事件的能力。</p>
+<p>SIGIO 信号也可以用来报告 IO 事件。我们可以为一个目标文件描述符指定宿主进程，那么被指定的宿主进程将捕获到 SIGIO 信号。这样，当目标文件描述符上有事件发生时，SIGIO 信号的信号处理函数将被触发。我们也就可以在该信号处理函数中对目标文件描述符执行非阻塞 IO 操作了。</p>
+<p>从理论上说，阻塞 IO、IO 复用和信号驱动 IO 都是同步 IO 模型。<br>这三种 IO 模型中，IO 的读写操作都是在 IO 事件发生之后，由应用程序来完成的。而异步 IO 模型指的是用户直接对 IO 执行读写操作，这些操作告诉内核用户读写缓冲区的位置，以及 IO 操作完成之后内核通知应用程序的方式。<br>异步 IO 的读写操作总是立即返回，而不论 IO 是否是阻塞的，因为真正的读写操作已经由内核接管。<br>可以这样理解：同步 IO 向应用程序通知的是 IO 就绪事件，异步 IO 向应用程序通知的是 IO 完成事件。</p>
+<h1 id="两种高效的事件处理模式"><a href="#两种高效的事件处理模式" class="headerlink" title="两种高效的事件处理模式"></a>两种高效的事件处理模式</h1><p>服务器通常需要处理三类事件：IO 事件、信号及定时事件。<br>随着网络设计模式的兴起，Reactor 和 Proactor 事件处理模式应运而生。同步 IO 模型通常用于实现 Reactor 模式，异步 IO 则用于实现 Proactor 模式。不过也可以使用同步 IO 方式模拟出 Procator 模式。</p>
+<h2 id="Reactor-模式"><a href="#Reactor-模式" class="headerlink" title="Reactor 模式"></a>Reactor 模式</h2><p>Reactor 模式要求主线程（IO 处理单元）只负责监听文件描述符上是否有事件发生。有则立刻将该事件通知工作线程（逻辑单元）。<br>除此之外，主线程不做任何其它实质性的工作。读写数据、接收新连接、处理客户请求等均在工作线程中完成。<br>下图是使用同步 IO 模型实现的 Reactor 模式的工作流程：<br><img src="https://pic4.zhimg.com/80/v2-ad4a09e1d05f8818e36c3426bc20663b_720w.webp" alt="alt=&quot;Reactor模式&quot;"></p>
+<ol>
+<li>主线程往 epoll 内核事件表中注册 socket 上的读就绪。</li>
+<li>主线程调用 epoll_wait 等待 socket 上有数据可读。</li>
+<li>当 socket 上有数据可读时，epoll_wait 通知主线程。主线程则将 socket 可读事件放入请求队列。</li>
+<li>睡眠在请求队列上的某个工作线程被唤醒，它从 socket 读取数据，并处理客户请求，然后往 epoll 内核事件表中注册该 socket 上的写就绪事件。</li>
+<li>主线程调用 epoll_wait 等待 socket 可写。</li>
+<li>当 socket 可写时，epoll_wait 通知主线程。主线程将 socket 可写事件放入请求队列。</li>
+<li>睡眠在请求队列上的某个工作线程被唤醒，它往 socket 上写入服务器处理客户请求的结果。</li>
+</ol>
+<h2 id="Proactor-模式"><a href="#Proactor-模式" class="headerlink" title="Proactor 模式"></a>Proactor 模式</h2><p>与 Reactor 模式不同，Proactor 模式将所有 IO 操作交给主线程和内核来处理，工作线程仅仅负责业务逻辑。因此，Procator 模式更符合上文中图 8.4 所描述的服务器编程框架。<br>使用异步 IO 模型实现的 Proactor 模式工作流程如下：<br><img src="https://pic4.zhimg.com/80/v2-ad07720d62393e453f46f3e55885ee07_720w.webp" alt="alt=&quot;Proactor模式&quot;"></p>
+<ol>
+<li>主线程调用 aio_read 函数向内核注册 socket 上的读完成事件，并告诉内核用户读缓冲区的位置，以及读操作完成时如何通知应用程序（这里以信号为例）。</li>
+<li>主线程继续处理其它逻辑。</li>
+<li>当 socket 上的数据被读入用户缓冲区后，内核将向应用程序发送一个信号，以通知应用程序数据已经可用。</li>
+<li>应用程序预先定义好的信号处理函数选择一个工作线程来处理客户请求。工作线程处理完客户请求后，调用 aio_write 函数向内核注册 socket 上的写完成事件，并高数内核用户写缓冲区的位置，以及写操作完成时如何通知应用程序（仍然以信号为例）。</li>
+<li>主线程继续处理其它逻辑。</li>
+<li>当用户缓冲区的数据被写入 socket 后，内核将向应用程序发送一个信号，以通知应用程序数据已经发送完毕。</li>
+<li>应用程序预先定义好的信号处理函数选择一个工作线程来做善后处理，比如决定是否关闭 socket。</li>
+</ol>
+<h2 id="模拟-Proactor-模式"><a href="#模拟-Proactor-模式" class="headerlink" title="模拟 Proactor 模式"></a>模拟 Proactor 模式</h2><p>使用同步 IO 方式模拟出 Proactor 模式的原理是：主线程执行数据读写操作，读写完成之后，主线程向工作线程通知这一“完成事件”。<br>从工作线程的角度来看，它们就直接获得了数据读写的结果。接下来要做的只是对读写的结果进行逻辑处理。<br>下图展示了用同步 IO 模拟出的 Proactor 模式的工作流程：<br><img src="https://pic2.zhimg.com/v2-699b97b9ed25d0c7ae0dd41593da0ba5_r.jpg" alt="alt=&quot;&quot;"></p>
+<ol>
+<li>主线程往 epoll 内核事件表中注册 socket 上的读就绪事件。</li>
+<li>主线程调用 epoll_wait 等待 socket 上有数据可读。</li>
+<li>当 socket 上有数据可读是，epoll_wait 通知主线程。主线程从 socket 循环读取数据，直到没有更多数据可读。然后将读取到的数据封装为一个请求对象并插入请求队列。</li>
+<li>睡眠在请求队列上的某个工作线程被唤醒，它获得请求对象并处理客户请求，然后往 epoll 内核事件表中注册 socket 上的写就绪事件。</li>
+<li>主线程调用 epoll_wait 等待 socket 可写。</li>
+<li>当 socket 可写时，epoll_wait 通知主线程。主线程往 socket 上写入服务器处理客户请求的结果。</li>
+</ol>
+<h1 id="两种高效的并发模式"><a href="#两种高效的并发模式" class="headerlink" title="两种高效的并发模式"></a>两种高效的并发模式</h1><p>并发模式是指 IO 处理单元和多个逻辑单元之间协调完成任务的方法。<br>并发编程的目的是让程序“同时”执行多个任务。如果程序是计算密集型的，并发编程并没有优势，反而由于任务的切换使效率降低。<br>但如果程序是 IO 密集型，比如经常读写文件、访问数据库等，由于 IO 操作远没有 CPU 的计算速度快，所以让程序阻塞于 IO 操作将浪费大量的 CPU 时间。<br>如果程序有多个执行线程，则当前被 IO 所阻塞的执行线程可以主动放弃 CPU（或由操作系统来调度），并将执行权转移到其它线程，提高 CPU 的利用率。</p>
+<p>服务器主要有两种并发编程模式：半同步/半异步（half-sync）模式 和 领导者/追随者（Leader/Followers）模式。</p>
+<h2 id="半同步-半异步模式"><a href="#半同步-半异步模式" class="headerlink" title="半同步/半异步模式"></a>半同步/半异步模式</h2><p>首先，半同步/半异步模式中的“同步”和“异步”与 IO 模型中的“同步”、“异步”是完全不同的概念。</p>
+<p>在 IO 模型中，“同步”和“异步”区分的是内核向应用程序通知的是何种 IO 事件（就绪/完成），以及该由谁来完成 IO 读写（程序/内核）。</p>
+<p>在并发模式中，“同步”指的是程序完全按照代码序列的顺序执行；“异步”指的是程序的执行需要由系统事件来驱动。<br>常见的系统事件包括中断、信号等。<br><img src="https://pic3.zhimg.com/80/v2-5e757d09c1f7a7ca3801cfa4f3fe15e6_720w.webp" alt="alt=&quot;并发模式中的同步和异步&quot;"><br>半同步/半异步模式中，同步线程用于处理客户逻辑（<strong>逻辑单元</strong>），异步线程用于处理 IO 事件（<strong>IO 处理单元</strong>）。<br>异步线程监听到客户请求后，就将其封装成请求对象并插入请求队列中。请求队列将通知某个工作在同步模式的工作线程来读取并处理该请求对象。<br><img src="https://pic3.zhimg.com/80/v2-b5b4603f395269b69287a43a896d1882_720w.webp" alt="alt=&quot;半同步/半异步模式的工作流程&quot;"><br>在服务器程序中，如果结合考虑两种事件处理模式和几种 IO 模型，则半同步/半异步模式就存在多种变体：</p>
+<h3 id="半同步-半反应堆"><a href="#半同步-半反应堆" class="headerlink" title="半同步/半反应堆"></a>半同步/半反应堆</h3><p><img src="" alt="alt=&quot;半同步/半反应堆模式&quot;"><br>只有主线程是异步线程。它负责监听所有 socket 上的事件。</p>
+<h3 id="高效的半同步半异步模式"><a href="#高效的半同步半异步模式" class="headerlink" title="高效的半同步半异步模式"></a>高效的半同步半异步模式</h3><p>主线程只负责监听 socket，连接 socket 由工作线程来管理。</p>
+<h2 id="领导者-追随者模式"><a href="#领导者-追随者模式" class="headerlink" title="领导者/追随者模式"></a>领导者/追随者模式</h2><p>领导者/追随者模式是多个工作线程轮流获得事件源集合，轮流监听、分发并处理事件。</p>
+<p>在任意时间点，程序都仅有一个领导者进程，它负责监听 IO 事件；其它线程都是追随者，它们休眠在线程池中等待成为新的领导者。</p>
+<p>当前的领导者如果检测到 IO 事件，首先要从线程池中推选出新的领导者线程，然后处理 IO 事件。<br>此时，新的领导者等待新的 IO 事件，而原领导者在处理 IO 事件，二者实现了并发。</p>
+<p>领导者/追随者模式包含以下几个组件：句柄集（HandleSet）、线程集（ThreadSet）、事件处理器（EventHandler）和具体的事件处理器（ConcreteEventHandler）：<br><img src="https://pic2.zhimg.com/80/v2-94eee2a9691e15fa199c76fbcf789da9_720w.webp" alt="alt=&quot;领导者/追随者模式的组件&quot;"><br>句柄集：句柄表示 IO 资源，通常是一个文件描述符。句柄集管理众多句柄，使用 wait_for_event 方法来监听这些句柄上的 IO 事件，并将其中的就绪事件通知给领导者线程。</p>
+<p>线程集：管理所有工作线程，负责各线程之间的同步，以及新领导者线程的退选。线程集中的线程在任意时间必处于 Leader、Processing、Follower 三种状态之一。</p>
+<p>事件处理集和具体的事件处理器：包含一个或多个回调函数 handle_event，用于处理事件对应的业务逻辑。</p>
+<h1 id="有限状态机"><a href="#有限状态机" class="headerlink" title="有限状态机"></a>有限状态机</h1><p>逻辑单元内部的一种高效编程方法。解析流程比较清晰，防止出错。</p>
+<h1 id="提高服务器性能的其它建议"><a href="#提高服务器性能的其它建议" class="headerlink" title="提高服务器性能的其它建议"></a>提高服务器性能的其它建议</h1><h2 id="池"><a href="#池" class="headerlink" title="池"></a>池</h2><p>在服务器硬件资源“充裕”的前提下，提高性能的一个直接方法是以空间换时间——即浪费服务器的硬件资源，以换取其运行性能。这就是池（pool）的概念。</p>
+<p>池是一组资源的集合，这组资源在服务器启动之初就被完全处理好并初始化，这称为静态资源分配。</p>
+<p>当服务器开始处理客户请求时，如果需要相关的资源就可以直接从池中获取，无需动态分配。</p>
+<p>当服务器处理完一个客户连接后，可以把相关资源放回池内，无需执行系统调用来释放资源。</p>
+<p>从最终效果来看，池相当于服务器管理系统资源的应用层设施，它避免了服务器对内核的频繁访问。</p>
+<p>根据不同的资源类型，常见的池有：</p>
+<ol>
+<li>内存池：通常用于 socket 的接收缓存和发送缓存。对于某些长度有限的客户请求，比如 http 请求，预先分配一个大小足够的接收缓存区。当客户请求超过接收缓存区的大小时，我们可以选择丢弃或动态扩大接收缓存区。</li>
+<li>进程池和线程池都是并发编程常用的技巧。当我们需要一个工作进程或工作线程来处理新到达的客户请求时，可以直接从池里取得一个执行实体，而无需动态地调用 fork 或 pthread_create 等函数。</li>
+<li>连接池是服务器预先和数据库程序建立的一组连接的集合。当某个逻辑单元需要访问数据库时，它可以直接从连接池中取得一个连接的实体来使用。待完成数据库的访问后，逻辑单元再将该连接返回给连接池。</li>
+</ol>
+<h2 id="数据复制"><a href="#数据复制" class="headerlink" title="数据复制"></a>数据复制</h2><p>高性能服务器应该避免不必要的数据复制，尤其是发生在用户代码和内核之间的数据复制。如果内核可以直接处理从 socket 或文件读入的数，则应用程序就没必要将这些数据从内核缓冲区复制到应用程序缓冲区中。</p>
+<p>比如 ftp 服务器，当客户请求一个文件时，服务器只需要检测目标文件是否存在，以及客户是否有读取权限，而绝不会关心文件的具体内容。<br>因此，ftp 服务器就无需把目标文件完整地读入到应用程序缓冲区中再调用 send 函数来发送，而是可以使用“零拷贝”函数 sendfile 来直接将其发送到客户端。</p>
+<p>此外，用户代码内部的数据复制也应该避免。<br>例如两个工作进程之间需要传递大量数据时，就应该考虑用共享内存而非管道或消息队列。</p>
+<h2 id="上下文切换和锁"><a href="#上下文切换和锁" class="headerlink" title="上下文切换和锁"></a>上下文切换和锁</h2><p>并发程序必须考虑上下文切换（context switch）的问题，即进程切换或线程切换导致的系统开销。即使是 IO 密集型的服务器，也不该使用过多的工作线程（或进程，下同），否则线程间的切换将占用大量的 CPU 时间，服务器真正用于处理业务逻辑的 CPU 时间就显得不足了。</p>
+<p>因此，为每个客户连接都创建一个工作线程的服务器模型是不可取的。<br>上文中提到的半同步/半异步模式是一种比较合理的解决方案，它允许一个线程同时处理多个客户连接。</p>
+<p>多线程服务器的一个优点是不同的线程可以运行在不同的 CPU 上。当线程的数量不大于 CPU 数量时，上下文切换就不是问题了。</p>
+<p>并发程序的另一个需要考虑的问题是共享资源的加锁保护。锁通常被认为是导致服务器效率低下的一个因素。因为它不处理任何业务逻辑，还访问内核资源。<br>所以当服务器有更好的解决方案时，就应该避免使用锁。如果必须用到锁，就考虑减小锁的粒度，比如使用读写锁。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/post/1124236f.html" rel="prev" title="力扣周赛336">
+                  <i class="fa fa-chevron-left"></i> 力扣周赛336
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/post/1124236f.html" rel="next" title="力扣周赛336">
+                  力扣周赛336 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">诗鸩</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
