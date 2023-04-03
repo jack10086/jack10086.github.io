@@ -128,7 +128,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -139,7 +139,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -183,6 +183,106 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/aeafbee0.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/post/aeafbee0.html" class="post-title-link" itemprop="url">IO模型</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-02-21 21:41:04" itemprop="dateCreated datePublished" datetime="2023-02-21T21:41:04+08:00">2023-02-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-02 21:54:45" itemprop="dateModified" datetime="2023-03-02T21:54:45+08:00">2023-03-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>转载自<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115912936">100%弄明白5种IO模型</a></p>
+<h1 id="从TCP发送数据的流程说起"><a href="#从TCP发送数据的流程说起" class="headerlink" title="从TCP发送数据的流程说起"></a>从TCP发送数据的流程说起</h1><p>要深入的理解各种IO模型，那么必须先了解下产生各种IO的原因是什么，要知道这其中的本质问题那么我们就必须要知道一条消息是如何从一个人发送到另外一个人的；</p>
+<p>以两个应用程序通讯为例，我们来了解一下当“A”向”B” 发送一条消息，简单来说会经过如下流程：</p>
+<p><strong>第一步</strong>：应用A把消息发送到 TCP发送缓冲区。</p>
+<p><strong>第二步</strong>：TCP发送缓冲区 再把消息发送出去，经过网络传递后，消息会发送到B服务器的 TCP接收缓冲区。</p>
+<p><strong>第三步</strong>：B再从 TCP接收缓冲区 去读取属于自己的数据。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-5311954c22d15ca91e47ab52168b7ada_720w.webp" alt="alt=&quot;&quot;"></p>
+<p>根据上图我们基本上了解消息发送要经过：应用A、应用A对应服务器的TCP发送缓冲区、经过网络传输后消息发送到了应用B对应服务器TCP接收缓冲区、最终B应用读取到消息。</p>
+<p>如果理解了上面的消息发送流程，那么我们下面开始进入文章的主题：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/post/aeafbee0.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1066,107 +1166,6 @@ f[i]:       “s中以i结尾的子串” 和 “t的前缀”能匹配的最大
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/post/e1553121.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/f2c4b155.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="诗鸩">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="诗鸩的笔记簿">
-      <meta itemprop="description" content="暴搜流派！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/post/f2c4b155.html" class="post-title-link" itemprop="url">C++ primer-2. 基本类型</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-10-26 12:26:16 / 修改时间：12:29:53" itemprop="dateCreated datePublished" datetime="2022-10-26T12:26:16+08:00">2022-10-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>C++定义了几种基本的内置类型，如字符、整形、浮点数等。</p>
-<h2 id="基本内置类型"><a href="#基本内置类型" class="headerlink" title="基本内置类型"></a>基本内置类型</h2><p>基本内置类型包括算数类型和空类型(void)，算数类型包括字符、整数型、浮点数和布尔值。</p>
-<h3 id="算数类型"><a href="#算数类型" class="headerlink" title="算数类型"></a>算数类型</h3><p>算数类型分为整数型和浮点型两类。字符和布尔值都属于整型。<br>C++定义了各类型的最小尺寸：bool未定义，char 8位，short 16位，int 16位，long 32位，long long 64位；<br>float是32位4字节，包括6位有效数字，double是64位8字节，包括10位有效数字。</p>
-<p>int、short、long都是带符号类型，char由编译器决定是否有符号。<br>C++提供了几种字符类型：</p>
-<ol>
-<li>char：一个char的空间应确保可以存放机器基本字符集中任意字符对应的数字值，即一个char的大小和一个机器字节一样。</li>
-<li>wchar_t：宽字节，用于拓展字符集，wchar_t确保可以存放机器最大扩展字符集中的任意一个字符。</li>
-<li>char16_t和char32_t：为Unicode字符集服务。</li>
-</ol>
-<p><b>类型选择</b>：</p>
-<ul>
-<li>明确数值不可能为负时，选用无符号类型。</li>
-<li>整数运算用int，数值太大用long long，不用short和long</li>
-<li>浮点数运算用double。float和double的计算代价相差无几。</li>
-</ul>
-<h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/post/f2c4b155.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
