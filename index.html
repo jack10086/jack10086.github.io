@@ -128,7 +128,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">32</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,6 +183,112 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/cddf7e3d.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="诗鸩">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="诗鸩的笔记簿">
+      <meta itemprop="description" content="暴搜流派！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/post/cddf7e3d.html" class="post-title-link" itemprop="url">操作系统摘要</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-27 14:31:05" itemprop="dateCreated datePublished" datetime="2023-07-27T14:31:05+08:00">2023-07-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-08-06 08:58:36" itemprop="dateModified" datetime="2023-08-06T08:58:36+08:00">2023-08-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h1><h2 id="为什么要有虚拟内存？"><a href="#为什么要有虚拟内存？" class="headerlink" title="为什么要有虚拟内存？"></a>为什么要有虚拟内存？</h2><p>为了在多进程环境下，使得进程之间的内存地址不收影响、互相隔离，于是操作系统就为每个进程独立分配一套<strong>虚拟地址空间</strong>，每个程序只关心自己的虚拟地址即可。表面上大家的虚拟地址都是一样的，但分配到实际的物理内存地址是不同的。</p>
+<p>每个进程都有自己的虚拟空间，而物理内存一台电脑上只有一个。所以当启用了大量的进程，物理内存必然会很紧张。于是操作系统会通过<strong>内存交换</strong>技术，把不常用的内存暂时存放到硬盘中（换出），需要时再装载会物理内存（换入）。</p>
+<p>虚拟地址和物理地址之间的‘映射’操作通常是由操作系统来维护的，有<strong>分段</strong>和<strong>分页</strong>以及两者结合的方式：</p>
+<p><strong>内存分段</strong>是根据程序的逻辑角度，把地址分为栈段、堆段、数据段、代码段等，这样可以分离出不同属性的段，同时段还是一块连续的空间。但是每个段的大小不一，就很容易导致外部内存碎片和内存交换效率低的问题。</p>
+<p><strong>内存分页</strong>是把虚拟地址空间和物理空间分成大小固定的页，如在 Linux 系统中，每一页的大小为 4KB。分页之后，就不会产生外部内存碎片问题。同时在内存交换时，写入硬盘也就几个页，大大提高了内存交换的效率。</p>
+<p>为了解决简单分页导致页表过大的问题，就有了<strong>多级页表</strong>，它解决了空间上的问题，但也导致了 CPU 在寻址过程中，需要很多层表的参与，加大了时间上的开销。为此，基于程序的<strong>局部性原理</strong>，在 CPU 芯片中加入了 <strong>TLB</strong>，负责缓存最近常被访问的页表项，以提高地址转换速度。</p>
+<p>Linux 系统主要采用了分页管理，但是由于 Intel 处理器的发展史，Linux 系统无法避免分段管理。于是 Linux 就把所有段的基地址设为 0，也就意味着所有程序的地址空间都是线性地址空间（虚拟地址），相当于屏蔽了 CPU 逻辑地址的概念，所以段只被用于访问控制和内存保护。</p>
+<ul>
+<li>最后，说下虚拟内存有什么作用？<ol>
+<li>虚拟内存可以使得进程对运行内存超过物理内存大小；</li>
+<li>由于每个进程都有自己的页表，所以每个进程的虚拟内存空间就是相互独立的。</li>
+<li>页表里的页表项中除了物理地之外，还有一些标记属性的比特，比如控制一个页的读写权限，标记一个页是否存在等。在内存访问方面，操作系统提供了更好的安全性。</li>
+</ol>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/post/cddf7e3d.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1078,102 +1184,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/post/24e091ba.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/882d72d5.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="诗鸩">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="诗鸩的笔记簿">
-      <meta itemprop="description" content="暴搜流派！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 诗鸩的笔记簿">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/post/882d72d5.html" class="post-title-link" itemprop="url">力扣周赛335</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2023-03-06 21:51:43 / 修改时间：21:59:12" itemprop="dateCreated datePublished" datetime="2023-03-06T21:51:43+08:00">2023-03-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="递枕头"><a href="#递枕头" class="headerlink" title="递枕头"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/pass-the-pillow/">递枕头</a></h1><p><strong>模拟：</strong>O(N)的时间复杂度，并不建议。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="type">int</span> <span class="title">passThePillow</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> time)</span> </span>&#123;</span><br><span class="line">		<span class="type">int</span> p = <span class="number">1</span>, fx = <span class="number">-1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; time; i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (p == <span class="number">1</span> || p == n)</span><br><span class="line">				fx = -fx;</span><br><span class="line">			p += fx;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> p;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p><strong>公式推导：</strong></p>
-<blockquote>
-<p>稍微把路径写长一点会发现，路径去除首位是一个循环，循环节为[2: n]+[n-1 : 1]，长度为 2*(n-1)；去除冗余循环节 t = time % (2*n-2)；<br>除去冗余的循环节后把首位加上，t += 1，此时可以发现规律：t &lt; n时，返回t；否则返回 2*n-t。<br>O(1)的时间复杂度</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="type">int</span> <span class="title">passThePillow</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> time)</span> </span>&#123;</span><br><span class="line">		<span class="type">int</span> t = (time % (n * <span class="number">2</span> - <span class="number">2</span>)) + <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">return</span> t &lt; n ? t : <span class="number">2</span> * n - t;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-<h1 id="二叉树中的第-K-大层和"><a href="#二叉树中的第-K-大层和" class="headerlink" title="二叉树中的第 K 大层和"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/kth-largest-sum-in-a-binary-tree/">二叉树中的第 K 大层和</a></h1><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>DFS 或 BFS 获取每层的节点和。排序后返回第k个值。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode() : val(0), left(nullptr), right(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">	vector&lt;<span class="type">long</span> <span class="type">long</span>&gt; ans;</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(TreeNode *p, <span class="type">int</span> k)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (p == <span class="literal">nullptr</span>)</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		<span class="keyword">while</span> (ans.<span class="built_in">size</span>() &lt; k + <span class="number">1</span>)</span><br><span class="line">			ans.<span class="built_in">push_back</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">		ans[k] += p-&gt;val;</span><br><span class="line"></span><br><span class="line">		<span class="built_in">f</span>(p-&gt;left, k + <span class="number">1</span>);</span><br><span class="line">		<span class="built_in">f</span>(p-&gt;right, k + <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="type">long</span> <span class="type">long</span> <span class="title">kthLargestLevelSum</span><span class="params">(TreeNode *root, <span class="type">int</span> k)</span> </span>&#123;</span><br><span class="line">		<span class="built_in">f</span>(root, <span class="number">0</span>);</span><br><span class="line">		<span class="keyword">if</span> (ans.<span class="built_in">size</span>() &lt; k)</span><br><span class="line">			<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">		<span class="built_in">sort</span>(ans.<span class="built_in">begin</span>(), ans.<span class="built_in">end</span>(), <span class="built_in">greater</span>&lt;<span class="type">long</span> <span class="type">long</span>&gt;());</span><br><span class="line">		<span class="keyword">return</span> ans[k<span class="number">-1</span>];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/post/882d72d5.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
